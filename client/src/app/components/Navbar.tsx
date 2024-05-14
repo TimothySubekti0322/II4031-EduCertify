@@ -11,7 +11,7 @@ const Navbar: React.FC<NavProps> = ({currPage}) => {
       <button onClick={() => (window.location.href = "/")} className= {(currPage ==="Home" ? "text-blue2 hover:text-black1 " : "text-white ")  + "font-bold hover:bg-pink1 ml-4  py-3 px-6 rounded-sm"}>EduCertify</button>
       <button onClick={() => (window.location.href = "/transcript")} className= {(currPage ==="Transcript" ? "text-blue2 hover:text-black1 " : "text-white ")  + "font-bold hover:bg-pink1 py-3 px-6 rounded-sm"}>Transcript</button>
       <button onClick={() => (window.location.href = "/generate")} className= {(currPage ==="Generate" ? "text-blue2 hover:text-black1 " : "text-white ")  + "font-bold hover:bg-pink1 py-3 px-6 rounded-sm"}>Generate New Key Pair</button>
-      <button onClick={() => (window.location.href = "/decrypt")} className= {(currPage ==="Decrypt File" ? "text-blue2 hover:text-black1 " : "text-white ")  + "font-bold hover:bg-pink1 py-3 px-6 rounded-sm"}>Decrypt File</button>
+      <button onClick={() => (window.location.href = "/decrypt")} className= {(currPage ==="Decrypt" ? "text-blue2 hover:text-black1 " : "text-white ")  + "font-bold hover:bg-pink1 py-3 px-6 rounded-sm"}>Decrypt File</button>
     </div>
   );
 };
