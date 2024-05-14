@@ -1,7 +1,7 @@
 // types.d.ts
 export interface RecordType {
-    NIM: string;
-    Nama: string;
+    "NIM": string;
+    "Nama": string;
     "Kode MK 1": string;
     "Nama MK 1": string;
     "Nilai MK 1": string;
@@ -42,9 +42,10 @@ export interface RecordType {
     "Nama MK 10": string;
     "Nilai MK 10": string;
     "SKS MK 10": number;
-    IPK: number;
+    "IPK": number;
+    "Public Key": string;
     "Tanda Tangan Digital": string;
-    Unduh: string;
-    Verifikasi: boolean;
+    // "Unduh": string;
+    // "Verifikasi": boolean;
   }
   
