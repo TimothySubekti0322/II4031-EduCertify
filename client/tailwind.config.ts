@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         'purple1': '#303056',
         'pink1': '#FC769F',
+        'pink2': '#F27399',
         'blue1': '#5691E6',
         'blue2': '#B8D2FC',
         'white1': '#FDFCFC',
