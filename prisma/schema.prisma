@@ -66,7 +66,7 @@ model Transcript {
   sks10         Int
   ipk           Float
   signature     String
-  key           Key        @relation(fields: [keyId], references: [key])
-  keyId         String
+  key           Key        @relation(fields: [publicKey], references: [key])
+  publicKey     String
   encryptKey    String
 }
