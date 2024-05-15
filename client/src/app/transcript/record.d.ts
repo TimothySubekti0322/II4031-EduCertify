@@ -46,6 +46,6 @@ export interface RecordType {
     "Public Key": string;
     "Tanda Tangan Digital": string;
     // "Unduh": string;
-    // "Verifikasi": boolean;
+    "Verifikasi": string;
   }
   

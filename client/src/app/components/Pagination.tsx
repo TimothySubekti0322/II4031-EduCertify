@@ -1,6 +1,5 @@
 "use client";
 
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { useState, useEffect } from "react";
 
 interface PaginationProps {
@@ -52,18 +51,18 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="flex gap-x-4">
       <button
-        className={`flex items-center justify-center text-black hover:bg-[#3C50E0] hover:text-white rounded-md w-8 h-8 ${
+        className={`flex items-center justify-center text-black hover:bg-pink1 hover:text-white rounded-md w-8 h-8 ${
           start == 1 ? "invisible" : ""
         }`}
         onClick={() => shiftLeft()}
       >
-        <BsChevronLeft />
+        Prev
       </button>
       {paginationList.map((item, index) => (
         <button
           key={index}
-          className={`flex items-center justify-center rounded-md w-8 h-8 hover:bg-[#3C50E0] hover:text-white ${
-            page == item ? "bg-[#3C50E0] text-white" : "text-black"
+          className={`flex items-center justify-center rounded-md w-8 h-8 hover:pink-2 hover:text-white ${
+            page == item ? "bg-pink-1 text-white" : "text-black"
           }`}
           onClick={() => setPage(item)}
         >
@@ -72,12 +71,12 @@ const Pagination: React.FC<PaginationProps> = ({
       ))}
 
       <button
-        className={`flex items-center justify-center text-black hover:bg-[#3C50E0] hover:text-white rounded-md w-8 h-8 ${
+        className={`flex items-center justify-center text-black hover:bg-pink1 hover:text-white rounded-md w-8 h-8 ${
           end == totalPages ? "invisible" : ""
         }`}
         onClick={() => shiftRight()}
       >
-        <BsChevronRight />
+        Next
       </button>
     </div>
   );

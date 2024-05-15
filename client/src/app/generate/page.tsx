@@ -29,6 +29,7 @@ export default function Generate() {
   });
 
   const generateKey = () => {
+    setGenerated(true);
     // const n1 = parseInt(input.num1);
     // const n2 = parseInt(input.num2);
     // if (input.num1.isNu){
@@ -106,7 +107,7 @@ export default function Generate() {
         </div>
         <div className="py-8 flex justify-center">
           <button className="bg-pink1 border-2 border- text-white1 text-md rounded-lg block w-60 p-2.5  hover:text-white drop-shadow-lg hover:drop-shadow-md hover:bg-pink2"
-          // onClick={() => } 
+          onClick={generateKey} 
           >
             Generate Key
           </button>
@@ -115,7 +116,7 @@ export default function Generate() {
         <div className= {(generated ===true ? " " : "invisible ")  + "flex justify-center gap-x-8 mt-2"}>
           <div className="items-center w-full">
             <p className="block  text-sm font-medium whitesspace-nowrap">
-              Public Key
+              Public Key:
             </p>
             <div className="w-full border border-2 border-purple1 rounded-lg h-8 bg-white1">
               {key.publicKey}
@@ -123,7 +124,7 @@ export default function Generate() {
           </div>
           <div className="items-center w-full">
             <p className="block  text-sm font-medium whitesspace-nowrap">
-              Private Key
+              Private Key:
             </p>
             <div className="w-full border border-2 border-purple1 rounded-lg h-8 bg-white1">
               {key.privateKey}

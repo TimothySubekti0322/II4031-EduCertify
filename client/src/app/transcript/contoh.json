@@ -44,7 +44,8 @@
       "SKS MK 10": 3,
       "IPK": 3.6,
       "Public Key": "aa",
-      "Tanda Tangan Digital": "e1bde4a76e6f45a0af5b2cb5d312d8a7"
+      "Tanda Tangan Digital": "e1bde4a76e6f45a0af5b2cb5d312d8a7",
+      "Verifikasi": "unchecked"
     },
     {
       "NIM": "2020010002",
@@ -91,7 +92,8 @@
       "SKS MK 10": 3,
       "IPK": 3.4,
       "Public Key": "aa",
-      "Tanda Tangan Digital": "f3d4e5b78c9a6b2f1c5d7e8f0a3b1d2c"
+      "Tanda Tangan Digital": "f3d4e5b78c9a6b2f1c5d7e8f0a3b1d2c",
+      "Verifikasi": "unchecked"
     },
     {
       "NIM": "2020010003",
@@ -138,7 +140,8 @@
       "SKS MK 10": 3,
       "IPK": 3.7,
       "Public Key": "aa",
-      "Tanda Tangan Digital": "a1b2c3d4e5f67890abcdef1234567890"
+      "Tanda Tangan Digital": "a1b2c3d4e5f67890abcdef1234567890",
+      "Verifikasi": "unchecked"
     },
     {
       "NIM": "2020010004",
@@ -185,7 +188,8 @@
       "SKS MK 10": 3,
       "IPK": 3.3,
       "Public Key": "aa",
-      "Tanda Tangan Digital": "b2c3d4e5f67890abcdef1234567890a1"
+      "Tanda Tangan Digital": "b2c3d4e5f67890abcdef1234567890a1",
+      "Verifikasi": "unchecked"
     },
     {
       "NIM": "2020010005",
@@ -232,7 +236,8 @@
       "SKS MK 10": 3,
       "IPK": 3.0,
       "Public Key": "aa",
-      "Tanda Tangan Digital": "c3d4e5f67890abcdef1234567890a1b2"
+      "Tanda Tangan Digital": "c3d4e5f67890abcdef1234567890a1b2",
+      "Verifikasi": "unchecked"
     },
     {
       "NIM": "2020010006",
@@ -279,7 +284,8 @@
       "SKS MK 10": 3,
       "IPK": 3.8,
       "Public Key": "aa",
-      "Tanda Tangan Digital": "d4e5f67890abcdef1234567890a1b2c3"
+      "Tanda Tangan Digital": "d4e5f67890abcdef1234567890a1b2c3",
+      "Verifikasi": "unchecked"
     },
     {
       "NIM": "2020010007",
@@ -326,7 +332,8 @@
       "SKS MK 10": 3,
       "IPK": 3.7,
       "Public Key": "aa",
-      "Tanda Tangan Digital": "e5f67890abcdef1234567890a1b2c3d4"
+      "Tanda Tangan Digital": "e5f67890abcdef1234567890a1b2c3d4",
+      "Verifikasi": "unchecked"
     }
 ]     
   

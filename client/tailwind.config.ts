@@ -10,8 +10,8 @@ const config: Config = {
     extend: {
       colors: {
         'purple1': '#303056',
-        'pink1': '#FC769F',
-        'pink2': '#F27399',
+        'pink1': '#F678A7',
+        'pink2': '#E6709B',
         'blue1': '#5691E6',
         'blue2': '#B8D2FC',
         'white1': '#FDFCFC',
