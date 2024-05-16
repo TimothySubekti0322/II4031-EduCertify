@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'purple1': '#303056',
-        'pink1': '#FC769F',
-        'pink2': '#F27399',
-        'blue1': '#5691E6',
-        'blue2': '#B8D2FC',
-        'white1': '#FDFCFC',
-        'black1': '#39383E'
-        },
+        purple1: "#303056",
+        pink1: "#FC769F",
+        pink2: "#F27399",
+        blue1: "#5691E6",
+        blue2: "#B8D2FC",
+        white1: "#FDFCFC",
+        black1: "#39383E",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -24,6 +24,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('tailwind-scrollbar')],
+  plugins: [require("tailwind-scrollbar"), require("daisyui")],
+  daisyui: {
+    themes: ["light"],
+  },
 };
 export default config;
