@@ -1,5 +1,8 @@
 import type { Transcript } from "@prisma/client";
 import toast from "react-hot-toast";
+import crypto from "crypto";
+
+type Data = String | ArrayBuffer | null;
 
 interface DownloadTranscriptProps {
   data: Transcript;
@@ -23,15 +26,46 @@ const downloadTranscript = async ({
     if (response.ok) {
       const blob = await response.blob();
 
-      // Encryption AES here
+      // Transform blob into Base64
+      let base64data: Data = null;
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        base64data = reader.result;
+        console.log("base64data", base64data?.toString());
 
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "transcript.pdf";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+        // Encryption AES here
+        const algorithm = "aes-256-cbc";
+        const key = "abcdefghijklmnopqrstuvwxyz123456";
+        const iv = "1234567891234567";
+
+        const cipher = crypto.createCipheriv(algorithm, key, iv);
+
+        if (typeof base64data == "string") {
+          const removedPrefix = base64data.split(",")[1];
+
+          let encrypted = cipher.update(removedPrefix, "base64", "base64");
+          encrypted += cipher.final("base64");
+          const newBase64string = `data:application/pdf;base64,${encrypted}`;
+
+          // Test Decrypt
+          // const decipher = crypto.createDecipheriv(algorithm, key, iv);
+
+          // const base64Encrypted = fromUrlSafeBase64(encryptedString);
+          // let decrypted = decipher.update(base64Encrypted, "base64", "base64");
+          // decrypted += decipher.final("base64");
+          // console.log("decrypted = ", decrypted);
+
+          const blobl = base64ToBlob(newBase64string);
+          const url = URL.createObjectURL(blobl);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "encrypted_transcript.pdf";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      };
     } else {
       toast.error("Failed to generate PDF ❌");
     }
@@ -41,6 +75,17 @@ const downloadTranscript = async ({
   } finally {
     setLoading(false);
   }
+};
+
+export const base64ToBlob = (base64: string): Blob => {
+  console.log("base64 in base64ToBlob = ", base64);
+  const byteCharacters = atob(base64.split(",")[1]);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: "application/pdf" });
 };
 
 export default downloadTranscript;
