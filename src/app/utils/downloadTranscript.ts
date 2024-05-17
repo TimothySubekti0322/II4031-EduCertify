@@ -1,6 +1,7 @@
 import type { Transcript } from "@prisma/client";
 import toast from "react-hot-toast";
 import crypto from "crypto";
+import { initialFactor, algorithm } from "../static/AES";
 
 type Data = String | ArrayBuffer | null;
 
@@ -35,11 +36,9 @@ const downloadTranscript = async ({
         console.log("base64data", base64data?.toString());
 
         // Encryption AES here
-        const algorithm = "aes-256-cbc";
         const key = "abcdefghijklmnopqrstuvwxyz123456";
-        const iv = "1234567891234567";
 
-        const cipher = crypto.createCipheriv(algorithm, key, iv);
+        const cipher = crypto.createCipheriv(algorithm, key, initialFactor);
 
         if (typeof base64data == "string") {
           const removedPrefix = base64data.split(",")[1];

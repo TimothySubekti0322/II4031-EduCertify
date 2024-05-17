@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { base64ToBlob } from "./downloadTranscript";
+import { initialFactor, algorithm } from "../static/AES";
 
 export const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
   const byteArray = new Uint8Array(buffer);
@@ -13,23 +14,23 @@ export const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
   return window.btoa(binary);
 };
 
-export const handleAnyFileRead = async (e: ProgressEvent<FileReader>) => {
+export const handleAnyFileRead = async (
+  e: ProgressEvent<FileReader>,
+  key: string
+) => {
   console.log(e.target);
   const content = arrayBufferToBase64(e.target?.result as ArrayBuffer);
   // setFileBaseString(content as ArrayBuffer);
   if (typeof content === "string") {
     console.log("content = ", content);
 
-    const algorithm = "aes-256-cbc";
-    const key = "abcdefghijklmnopqrstuvwxyz123456";
-    const iv = "1234567891234567";
+    // const key = "abcdefghijklmnopqrstuvwxyz123456";
 
-    const decipher = crypto.createDecipheriv(algorithm, key, iv);
+    const decipher = crypto.createDecipheriv(algorithm, key, initialFactor);
 
     const base64Encrypted = content;
     let decrypted = decipher.update(base64Encrypted, "base64", "base64");
     decrypted += decipher.final("base64");
-    console.log("decrypted = ", decrypted);
     const newBase64string = `data:application/pdf;base64,${decrypted}`;
     console.log("decrypted = ", decrypted);
 
@@ -45,13 +46,14 @@ export const handleAnyFileRead = async (e: ProgressEvent<FileReader>) => {
 };
 
 export const handleAnyFileChange = async (
-  e: React.ChangeEvent<HTMLInputElement>
+  e: React.ChangeEvent<HTMLInputElement>,
+  key: string
 ) => {
   e.preventDefault();
   if (e.target.files) {
     console.log(e.target.files[0]);
     const reader = new FileReader();
-    reader.onloadend = handleAnyFileRead;
+    reader.onloadend = (event) => handleAnyFileRead(event, key);
     reader.readAsArrayBuffer(e.target.files[0]);
   }
 };
