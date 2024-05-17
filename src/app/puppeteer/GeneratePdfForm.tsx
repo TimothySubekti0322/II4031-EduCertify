@@ -61,39 +61,8 @@ const GeneratePdfForm = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // downloadTranscript({ data: transcriptData, setLoading });
     e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await fetch("/api/generate-pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transcriptData),
-      });
-
-      if (response.ok) {
-        const blob = await response.blob();
-
-        // Encryption AES here
-
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "transcript.pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      } else {
-        toast.error("Failed to generate PDF ❌");
-      }
-    } catch (error) {
-      console.error("Failed to generate PDF", error);
-      toast.error("Failed to generate PDF ❌");
-    } finally {
-      setLoading(false);
-    }
+    downloadTranscript({ data: transcriptData, setLoading });
   };
 
   return (
