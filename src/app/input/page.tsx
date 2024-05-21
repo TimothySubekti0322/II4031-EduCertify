@@ -64,7 +64,7 @@ export default function Input() {
         <main className="min-h-screen items-center bg-gradient-to-b from-[#CAD8F0] to-blue2 ">
             <Navbar currPage="Input" />
             <div className="container mx-auto w-1/2 pt-24 text-purple1">
-                <h1 className="text-center text-3xl font-extrabold">Portal Input Nilai Jurusan</h1>
+                <h1 className="text-center text-3xl font-extrabold">Input Nilai Jurusan</h1>
                 <h1 className="text-center text-2xl font-extrabold mb-4">Sistem dan Teknologi Informasi ITB</h1>
                 <h2 className="text-xl font-bold">Data Kaprodi</h2>
                 <div>
