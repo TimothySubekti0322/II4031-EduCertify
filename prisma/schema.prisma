@@ -13,57 +13,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Nanti Key nya mau gimana ? public sama private bakal dipisah atau nggak ? bentuk data typesnya apa ?
-
 model Key {
-  key     String    @id
-  owner   String
-  transcript Transcript[]
+  key           String    @id
+  owner         String
+  transcript    Transcript[]
 }
 
 model Transcript {
   nim           String     @id
   nama          String
-  kodemk1       String
-  namamk1       String
+  kodeMk1       String
+  namaMk1       String
   nilai1        String
   sks1          Int
-  kodemk2       String
-  namamk2       String
+  kodeMk2       String
+  namaMk2       String
   nilai2        String
   sks2          Int
-  kodemk3       String
-  namamk3       String
+  kodeMk3       String
+  namaMk3       String
   nilai3        String
   sks3          Int
-  kodemk4       String
-  namamk4       String
+  kodeMk4       String
+  namaMk4       String
   nilai4        String
   sks4          Int
-  kodemk5       String
-  namamk5       String
+  kodeMk5       String
+  namaMk5       String
   nilai5        String
   sks5          Int
-  kodemk6       String
-  namamk6       String
+  kodeMk6       String
+  namaMk6       String
   nilai6        String
   sks6          Int
-  kodemk7       String
-  namamk7       String
+  kodeMk7       String
+  namaMk7       String
   nilai7        String
   sks7          Int
-  kodemk8       String
-  namamk8       String
+  kodeMk8       String
+  namaMk8       String
   nilai8        String
   sks8          Int
-  kodemk9       String
-  namamk9       String
+  kodeMk9       String
+  namaMk9       String
   nilai9        String
   sks9          Int
-  kodemk10      String
-  namamk10      String
+  kodeMk10      String
+  namaMk10      String
   nilai10       String
   sks10         Int
+  totalSks      Int
   ipk           Float
   signature     String
   key           Key        @relation(fields: [publicKey], references: [key])

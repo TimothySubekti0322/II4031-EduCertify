@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            font-size: 14px;
+        }
+
+        .center-title {
+            width: 100%;
+            text-align: center;
+        }
+
+        .name {
+            margin-top: 4px;
+            margin-bottom: 0px;
+        }
+
+        .transcriptAkademik {
+            padding-top: 24px;
+            padding-bottom: 12px;
+        }
+
+        .padding-0 {
+            padding: 0px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            padding-top: 24px;
+            padding-bottom: 12px;
+        }
+
+        th {
+            padding: 2px;
+            border: 1px solid black;
+        }
+
+        td {
+            padding: 2px;
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        .paddingTop-12 {
+            padding-top: 12px;
+        }
+
+        .paddingBottom-24 {
+            padding-bottom: 24px;
+        }
+
+        .signature-section {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding-left: 40px;
+            padding-bottom: 40px;
+        }
+
+        .paddingTop-16 {
+            padding-top: 16px;
+        }
+
+        .paddingBottom-16 {
+            padding-bottom: 16px;
+        }
+    </style>
+    <title>PDF Template</title>
+</head>
+
+<body>
+    <div class="container">
+        <p class="title">Program Studi Sistem dan Teknologi Informasi</p>
+        <p class="title">Sekolah Teknik Elektro dan Informatika</p>
+        <p class="title">Institut Teknologi Bandung</p>
+        <p>-------------------------------------------------------</p>
+        <p class="transcriptAkademik center-title content">Transkip Akademik</p>
+        <p class="name center-title padding-0 content">Nama: {{name}}</p>
+        <p class="center-title padding-0 content paddingBottom-24">NIM: {{nim}}</p>
+
+        <table>
+            <tr>
+                <th class="content">No</th>
+                <th class="content">Kode Mata Kuliah</th>
+                <th class="content">Nama Mata Kuliah</th>
+                <th class="content">SKS</th>
+                <th class="content">Nilai</th>
+            </tr>
+            <tr>
+                <td class="content">1</td>
+                <td class="content">{{kodeMk1}}</td>
+                <td class="content">{{namaMk1}}</td>
+                <td class="content">{{sks1}}</td>
+                <td class="content">{{nilai1}}</td>
+            </tr>
+            <tr>
+                <td class="content">2</td>
+                <td class="content">{{kodeMk2}}</td>
+                <td class="content">{{namaMk2}}</td>
+                <td class="content">{{sks2}}</td>
+                <td class="content">{{nilai2}}</td>
+            </tr>
+            <tr>
+                <td class="content">3</td>
+                <td class="content">{{kodeMk3}}</td>
+                <td class="content">{{namaMk3}}</td>
+                <td class="content">{{sks3}}</td>
+                <td class="content">{{nilai3}}</td>
+            </tr>
+            <tr>
+                <td class="content">4</td>
+                <td class="content">{{kodeMk4}}</td>
+                <td class="content">{{namaMk4}}</td>
+                <td class="content">{{sks4}}</td>
+                <td class="content">{{nilai4}}</td>
+            </tr>
+            <tr>
+                <td class="content">5</td>
+                <td class="content">{{kodeMk5}}</td>
+                <td class="content">{{namaMk5}}</td>
+                <td class="content">{{sks5}}</td>
+                <td class="content">{{nilai5}}</td>
+            </tr>
+            <tr>
+                <td class="content">6</td>
+                <td class="content">{{kodeMk6}}</td>
+                <td class="content">{{namaMk6}}</td>
+                <td class="content">{{sks6}}</td>
+                <td class="content">{{nilai6}}</td>
+            </tr>
+            <tr>
+                <td class="content">7</td>
+                <td class="content">{{kodeMk7}}</td>
+                <td class="content">{{namaMk7}}</td>
+                <td class="content">{{sks7}}</td>
+                <td class="content">{{nilai7}}</td>
+            </tr>
+            <tr>
+                <td class="content">8</td>
+                <td class="content">{{kodeMk8}}</td>
+                <td class="content">{{namaMk8}}</td>
+                <td class="content">{{sks8}}</td>
+                <td class="content">{{nilai8}}</td>
+            </tr>
+            <tr>
+                <td class="content">9</td>
+                <td class="content">{{kodeMk9}}</td>
+                <td class="content">{{namaMk9}}</td>
+                <td class="content">{{sks9}}</td>
+                <td class="content">{{nilai9}}</td>
+            </tr>
+            <tr>
+                <td class="content">10</td>
+                <td class="content">{{kodeMk10}}</td>
+                <td class="content">{{namaMk10}}</td>
+                <td class="content">{{sks10}}</td>
+                <td class="content">{{nilai10}}</td>
+            </tr>
+        </table>
+
+        <p class="center-title content paddingTop-12">Total Jumlah SKS = {{totalSks}}</p>
+        <p class="center-title content padding-0">IPK = {{ipk}}</p>
+        <div class="signature-section">
+            <p class="content">Ketua Program Studi</p>
+            <p class="content paddingTop-16">--Begin signature--</p>
+            <p class="content">{{publicKey}}</p>
+            <p class="content paddingBottom-16">--End signature--</p>
+            <p class="content">({{owner}})</p>
+        </div>
+    </div>
+</body>
+
+</html>
