@@ -3,6 +3,8 @@ import { SetStateAction, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import curriculum from './courses';
 import axios from 'axios';
+// import { sha3 } from 'crypto-js/sha3';
+import { keccak256 } from 'js-sha3';
 
 const grades = ["A", "B", "C", "D", "E", "T"];
 const gradeValues: { [key: string]: number } = {
@@ -11,7 +13,7 @@ const gradeValues: { [key: string]: number } = {
     C: 2,
     D: 1,
     E: 0,
-    F: 0
+    T: 0
 };
 
 interface Transcript {
@@ -75,10 +77,10 @@ export default function Input() {
     };
 
     const setDefaultValues = () => {
-        setNamaMahasiswa('John Doe');
+        setNamaMahasiswa('Prikitiw');
         setNIM('202121072');
         setKodeMK(["MA1101", "FI1101", "KU1001", "KU1102", "KU1011", "KU1024", "MA1201", "FI1201", "IF1210", "KU1202"]);
-        setNilai(["A", "B", "C", "D", "A", "A", "B", "C", "D", "A"]);
+        setNilai(["A", "B", "C", "D", "A", "A", "B", "C", "T", "A"]);
         // setSelectedKaprodi('Basuki');
         setPrivateKey('defaultPrivateKey');
     };
@@ -127,6 +129,9 @@ export default function Input() {
             transcript[`sks${i + 1}`] = mataKuliah[i]?.SKS || 0;
         }
 
+        transcript.signature = keccak256(String(transcript))
+        // console.log(signature);
+
         try {
             const response = await axios.post('/api/transcript', transcript);
             const data = response.data;
@@ -142,7 +147,7 @@ export default function Input() {
             alert('Failed to submit transcript');
         }
 
-        console.log("not stringed", transcript);
+        alert(`Data Submitted Successfully! Total SKS: ${totalSKS}, IPK: ${ipk}`);
         console.log("with JSON", JSON.stringify(transcript));
 
     };
