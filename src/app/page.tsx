@@ -42,15 +42,15 @@ export default function Home() {
               imageSrc="/foto1.jpg" 
               name="Nadira" 
               studentNumber="18221070" 
-              linkedin="linkedin.com/in/nadira" 
-              github="nadira" 
+              linkedin="linkedin.com/in/nadira-ra" 
+              github="nadiraaraa" 
             />
             <ProfileCard 
               imageSrc="/foto2.jpeg" 
-              name="Timothy" 
+              name="Timothy Subekti" 
               studentNumber="18221071" 
-              linkedin="linkedin.com/in/timothy" 
-              github="timothy" 
+              linkedin="linkedin.com/in/timothy-subekti" 
+              github="TimothySubekti0322" 
             />
             <ProfileCard 
               imageSrc="/foto3.jpg" 

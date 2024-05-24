@@ -62,7 +62,9 @@ const GeneratePdfForm = (transcriptData: any) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    downloadTranscript({ data: transcriptData, setLoading });
+    const {validated, ...data} = transcriptData.transcriptData;
+    console.log(data);
+    downloadTranscript({ data: data, setLoading });
   };
 
   return (
