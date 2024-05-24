@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# EduCertify Web Application
+
+## Overview
+
+EduCertify is a digital signature prototype website built using Next.js and TypeScript. This project is designed for cryptography and coding lectures, providing a secure way to handle academic transcripts. The system creates digital signatures by hashing the transcript data and encrypting it with the head of the study program's private key using RSA. Users can view both the cipher text and plaintext, download the encrypted transcript PDF (using AES), and decrypt the file to retrieve the original transcript.
+## Features
+
+- **Digital Signature Generation**: Hashes academic transcript data and encrypts it using RSA with the head of the study program's private key.
+- **Display**: Shows both the encrypted (cipher text) and decrypted (plaintext) versions of the academic transcript.
+- **PDF Download**: Allows users to download the academic transcript PDF encrypted with AES-256-cbc algorithm.
+- **Decryption**: Provides a feature to decrypt the AES-encrypted PDF to retrieve the original file.
+## Tech Stack
+
+- **Framework**: Next.js
+- **Language**: TypeScript
+- **CSS**: Tailwind CSS
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Cloud DB**: Supabase
+- **Encryption Algorithms**: RSA, AES, RC4
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+Before you begin, ensure you have met the following requirements:
+
+- **Node.js**: This project requires Node.js version 20.0.0 or higher. To check your Node.js version, run `node -v` in your terminal. If you need to update or install Node.js, visit [Node.js Download](https://nodejs.org/en/download/).
+- **Cloud Database Access**: Ensure you have access to a cloud database. This project uses Supabase as the cloud database. Set up an account or log in to your existing Supabase account to connect the application to the database.
+
+
+### Installation
+These instructions will get your copy of the project up and running on your local machine for development and testing purposes.
+
+First of all you need to clone this project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://github.com/TimothySubekti0322/II4031-EduCertify
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+  cd Path/to/II4031-EduCertify
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Then install all the dependencies by simply run this code on the terminal
 
-## Learn More
+```bash
+  npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+Next, Create a .env file that contains your Database URL connection. Copy this code below and paste it on your .env file. Change **YOUR_DATABASE_CONNECTION_URL** with your own database url connection.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+DATABASE_URL=YOUR_DATABASE_CONNECTION_URL
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Next, in Schema.prisma , you could change db provider to anything you want. but it would be recomended if you are using postgresql
 
-## Deploy on Vercel
+Then, Run migration to create database in your local database that using this command bellow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx prisma migrate dev --name init
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+then to run the website locally , you need to run this command below
+
+```bash
+  npm run start
+```
+
+Now you can access the server in http://localhost:3000/
+
+## Deployment
+
+The project is deployed at https://ii-4031-edu-certify.vercel.app.
+
+**Note:** The project is hosted on free hosting and uses a free cloud database. As a result, performance may be slow, especially since encryption operations require high computing power.
+
+### Usage
+
+1. Navigate to the application in your web browser:
+    ```bash
+    http://localhost:3000
+    ```
+
+2. Create your private key
+3. Fill the transcript Academic Data
+3. View the generated digital signature (both cipher text and plaintext).
+4. Now you could to verify the digital signature by clicking verify button in the table section
+5. Download the AES-encrypted PDF of the transcript.
+6. Use the decryption feature to retrieve the original transcript.
+## Contributor
+
+- [18221059 - Nadira Rahmananda Arifandi](https://github.com/nadiraaraa)
+- [18221063 - Timothy Subekti](https://github.com/TimothySubekti0322/)
+- [18221072 - Hilmi Baskara Radanto](https://github.com/hilmibaskara)
+
+## Feedback
+
+We'd love to hear your thoughts and suggestions! Please feel free to open an issue or contact us directly at velmothy14@gmail.com
