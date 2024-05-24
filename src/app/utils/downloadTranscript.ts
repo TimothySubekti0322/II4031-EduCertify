@@ -11,6 +11,22 @@ interface DownloadTranscriptProps {
   key: string;
 }
 
+function hashStringTo32Bytes(inputString: string) {
+  // Create a hash object using the SHA-256 algorithm
+  const hash = crypto.createHash('sha256');
+
+  // Update the hash object with the input string
+  hash.update(inputString);
+
+  // Generate the hash digest and return it as a hexadecimal string
+  const hashDigest = hash.digest('hex');
+
+  // Ensure the hash digest is exactly 32 bytes by truncating or padding
+  const truncatedHashDigest = hashDigest.slice(0, 32); 
+
+  return truncatedHashDigest;
+}
+
 const downloadTranscript = async ({
   data,
   setLoading,
@@ -40,7 +56,9 @@ const downloadTranscript = async ({
         // Encryption AES here
         // const key = "abcdefghijklmnopqrstuvwxyz123456";
 
-        const cipher = crypto.createCipheriv(algorithm, key, initialFactor);
+        const hashKey = hashStringTo32Bytes(key);
+
+        const cipher = crypto.createCipheriv(algorithm, hashKey, initialFactor);
 
         if (typeof base64data == "string") {
           const removedPrefix = base64data.split(",")[1];
