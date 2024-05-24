@@ -91,6 +91,8 @@ const postTranscriptHandler = async (
   try {
     const transcript: Transcript = req.body;
 
+    console.log(transcript);
+
     // validate request
     if (!transcript) {
       return res
