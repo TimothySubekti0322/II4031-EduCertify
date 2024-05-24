@@ -10,6 +10,7 @@ import { keccak256 } from "js-sha3";
 import { Base64 } from "js-base64";
 import GeneratePdfForm from "../decrypt/GeneratePdfForm";
 import type { Transcript, RecordType, Key } from "./transcript.type";
+import { handleValidate } from "../utils/validateSignature";
 
 // type Key =
 
@@ -129,22 +130,27 @@ export default function Transcript() {
     "encryptKey",
   ];
 
-  const handleValidate = () => {
-    // VALIDASI DIGITAL SIGNATURE
-    // 1. Decrypt Signature with publicKey => message digest
-    // 2. Decrypt database with encryptedKey + Hash => message digest
-    // 3. Compare message digest. If same (validated = "valid") else (validate = "invalid")
-    // Langkah 1. Decrypt signature with publicKey
-    // const signatureDigest = RSA.decryptText(transcript.signature, transcript.publicKeyE, transcript.publicKeyN);
-    // Langkah 2. Hash database
-    // const messageDigest = keccak256(String(transcript));
-    // Langkah 3. Compare message digest
+    // const handleValidate = (idx: number) => {
+        // VALIDASI DIGITAL SIGNATURE
+        // 1. Decrypt Signature with publicKey => message digest
+        // 2. Decrypt database with encryptedKey + Hash => message digest
+        // 3. Compare message digest. If same (validated = "valid") else (validate = "invalid")
+
+        // Langkah 1. Decrypt signature with publicKey
+        // const signatureDigest = RSA.decryptText(transcript.signature, transcript.publicKeyE, transcript.publicKeyN);
+
+        // Langkah 2. Hash database
+        // const messageDigest = keccak256(String(transcript));
+
+        // Langkah 3. Compare message digest
     //     if (signatureDigest === messageDigest) {
     //         transcript.validated = 'valid';
     //     } else {
     //         transcript.validated = 'invalid';
     //     }
-  };
+        // console.log("tes", idx);
+        // console.log("tis", plainTranscript[idx]);
+    // }
 
   const handleDownload = () => {};
 
@@ -152,7 +158,7 @@ export default function Transcript() {
     return transcript.map((item) => {
       const decryptedItem: RecordType = { ...item };
       Object.keys(decryptedItem).forEach((key) => {
-        if (key !== "signature" && key !== "encryptKey" && key !== "keyId") {
+        if (key !== "encryptKey" && key !== "keyId") {
           const decryptedKey = key as Key;
           const decryptedValue = RC4.decrypt(
             Base64.decode(decryptedItem[decryptedKey] as string),
@@ -273,8 +279,9 @@ export default function Transcript() {
                               className="w-8 h-6 "
                             ></img>
                             <button
+                            key = "idx"
                               className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
-                              onClick={handleValidate}
+                              onClick={() => handleValidate(plainTranscript[idx])}
                             >
                               Verify Data
                             </button>
@@ -317,8 +324,9 @@ export default function Transcript() {
                               className="w-8 h-6 "
                             ></img>
                             <button
+                            key = "idx"
                               className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
-                              onClick={handleValidate}
+                              onClick={() => handleValidate(plainTranscript[idx])}
                             >
                               Verify Data
                             </button>
