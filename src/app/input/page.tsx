@@ -22,8 +22,8 @@ const gradeValues: { [key: string]: number } = {
 interface Transcript {
   nim: string;
   nama: string;
-  totalSks: number;
-  ipk: number;
+  totalSks: string;
+  ipk: string;
   signature: string;
   publicKeyE: string;
   publicKeyN: string;
@@ -153,15 +153,16 @@ export default function Input() {
       return course?.SKS || 0;
     });
 
-    const totalSKS = sksMataKuliah.reduce((total, sks) => total + sks, 0);
+    const temp_totalSKS = sksMataKuliah.reduce((total, sks) => total + sks, 0);
+    const totalSKS = String(temp_totalSKS);
 
     const totalWeightedScores = mataKuliah.reduce((total, course, index) => {
       const gradeValue = gradeValues[nilai[index]];
       return total + gradeValue * (course?.SKS || 0);
     }, 0);
 
-    const temp_ipk = totalWeightedScores / totalSKS;
-    const ipk = parseFloat(temp_ipk.toFixed(2));
+    const temp_ipk = totalWeightedScores / temp_totalSKS;
+    const ipk = String(temp_ipk.toFixed(2));
 
     // const transcript: Transcript = {
     //     nim: NIM,
@@ -238,43 +239,43 @@ export default function Input() {
       kodeMk1: transcript.kodeMk1,
       namaMk1: transcript.namaMk1,
       nilai1: transcript.nilai1,
-      sks1: transcript.sks1,
+      sks1: String(transcript.sks1),
       kodeMk2: transcript.kodeMk2,
       namaMk2: transcript.namaMk2,
       nilai2: transcript.nilai2,
-      sks2: transcript.sks2,
+      sks2: String(transcript.sks2),
       kodeMk3: transcript.kodeMk3,
       namaMk3: transcript.namaMk3,
       nilai3: transcript.nilai3,
-      sks3: transcript.sks3,
+      sks3: String(transcript.sks3),
       kodeMk4: transcript.kodeMk4,
       namaMk4: transcript.namaMk4,
       nilai4: transcript.nilai4,
-      sks4: transcript.sks4,
+      sks4: String(transcript.sks4),
       kodeMk5: transcript.kodeMk5,
       namaMk5: transcript.namaMk5,
       nilai5: transcript.nilai5,
-      sks5: transcript.sks5,
+      sks5: String(transcript.sks5),
       kodeMk6: transcript.kodeMk6,
       namaMk6: transcript.namaMk6,
       nilai6: transcript.nilai6,
-      sks6: transcript.sks6,
+      sks6: String(transcript.sks6),
       kodeMk7: transcript.kodeMk7,
       namaMk7: transcript.namaMk7,
       nilai7: transcript.nilai7,
-      sks7: transcript.sks7,
+      sks7: String(transcript.sks7),
       kodeMk8: transcript.kodeMk8,
       namaMk8: transcript.namaMk8,
       nilai8: transcript.nilai8,
-      sks8: transcript.sks8,
+      sks8: String(transcript.sks8),
       kodeMk9: transcript.kodeMk9,
       namaMk9: transcript.namaMk9,
       nilai9: transcript.nilai9,
-      sks9: transcript.sks9,
+      sks9: String(transcript.sks9),
       kodeMk10: transcript.kodeMk10,
       namaMk10: transcript.namaMk10,
       nilai10: transcript.nilai10,
-      sks10: transcript.sks10,
+      sks10: String(transcript.sks10),
       totalSks: transcript.totalSks,
       ipk: transcript.ipk,
       keyId: transcript.keyId,
@@ -285,7 +286,9 @@ export default function Input() {
     // CREATING DIGITAL SIGNATURE
     // 1. message --> hash --> message Digest
     // 2. message digest --> encrypt (private key) --> signature
+    console.log(JSON.stringify(transcriptForHashing));
     const digest = keccak256(JSON.stringify(transcriptForHashing));
+    console.log(digest);
     transcript.signature = RSA.encryptText(digest, privateKey, publicKeyN); // transcript.signature = digest;
     // console.log(signature);
 
