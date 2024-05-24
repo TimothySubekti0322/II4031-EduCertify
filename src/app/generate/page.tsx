@@ -13,9 +13,9 @@ interface InputType {
   num2: string;
 }
 interface KeyType {
-  publicKey: BigInt | undefined;
-  privateKey: BigInt | undefined;
-  modulus: BigInt | undefined;
+  publicKey: String;
+  privateKey: String;
+  modulus: String;
 }
 
 export default function Generate() {
@@ -30,9 +30,9 @@ export default function Generate() {
     num2: ""
   });
   const [key, setKey] = useState<KeyType>({
-    publicKeyE: undefined,
-    publicKeyN: undefined,
-    owner: undefined
+    publicKey: "",
+    privateKey: "",
+    modulus: ""
   });
 
   const validateSubmit = () => {
@@ -77,10 +77,16 @@ export default function Generate() {
       console.log(errorName, errorNum);
       const newKey = generateKey(input.num1, input.num2);
       console.log("newKey", newKey);
-        key = ({
+        const form = ({
           publicKeyE: newKey.publicKey.toString(),
           publicKeyN: newKey.modulus.toString(),
           owner: input.name
+        })
+
+        setKey({
+          publicKey: newKey.publicKey.toString(),
+          privateKey: newKey.privateKey.toString(),
+          modulus: newKey.modulus.toString()
         })
 
         console.log(form);
