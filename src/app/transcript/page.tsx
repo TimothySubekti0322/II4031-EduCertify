@@ -6,9 +6,10 @@ import { ChangeEvent, useEffect, useState } from "react";
 import axios from 'axios';
 import Pagination from "../components/Pagination";
 import {RSA} from "../utils/RSA";
-import RC4 from "../utils/RC4";
+import {RC4} from "../utils/RC4";
 import { keccak256 } from "js-sha3";
 import { Base64 } from "js-base64";
+import GeneratePdfForm from "../decrypt/GeneratePdfForm";
 
 export default function Transcript() {
     // const [transcript, setTranscript] = useState<RecordType[]>();
@@ -122,11 +123,7 @@ export default function Transcript() {
                                             <th key={idx2} className="border-2 border-purple1 px-4 py-1 w-24 font-normal">{item[col]}</th>
                                         )}
                                         <th className="border-2 border-purple1 px-4 py-1 w-24 font-normal">
-                                            <button className=""
-                                            onClick={handleDownload} 
-                                            >
-                                                <img src="/download.png" alt="download file" className="w-6 inline-flex"></img>
-                                            </button>
+                                        <GeneratePdfForm />
                                         </th>
                                         <th className="border-2 border-purple1 px-6 py-1 w-24 font-normal ">
                                             <div className="flex justify-center gap-x-2">

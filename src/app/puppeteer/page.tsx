@@ -1,5 +1,5 @@
 "use client";
-import GeneratePdfForm from "./GeneratePdfForm";
+import GeneratePdfForm from "../decrypt/GeneratePdfForm";
 import { handleAnyFileChange } from "../utils/decryptFile";
 
 const HomePage = () => {
