@@ -10,8 +10,11 @@ import {RC4} from "../utils/RC4";
 import { keccak256 } from "js-sha3";
 import { Base64 } from "js-base64";
 import GeneratePdfForm from "../decrypt/GeneratePdfForm";
+import type { Transcript } from "./transcript.type";
 
-export default function Transcript() {
+// type Key = 
+
+// export default function Transcript() {
     // const [transcript, setTranscript] = useState<RecordType[]>();
 
     // const transcript: RecordType[] = contoh.map(d => ({
@@ -68,6 +71,8 @@ export default function Transcript() {
             return decryptedItem;
         });
     }
+
+    console.log(plainTranscript)
 
 
     useEffect(() => {
