@@ -25,45 +25,45 @@ model Transcript {
   kodeMk1       String
   namaMk1       String
   nilai1        String
-  sks1          Int
+  sks1          String
   kodeMk2       String
   namaMk2       String
   nilai2        String
-  sks2          Int
+  sks2          String
   kodeMk3       String
   namaMk3       String
   nilai3        String
-  sks3          Int
+  sks3          String
   kodeMk4       String
   namaMk4       String
   nilai4        String
-  sks4          Int
+  sks4          String
   kodeMk5       String
   namaMk5       String
   nilai5        String
-  sks5          Int
+  sks5          String
   kodeMk6       String
   namaMk6       String
   nilai6        String
-  sks6          Int
+  sks6          String
   kodeMk7       String
   namaMk7       String
   nilai7        String
-  sks7          Int
+  sks7          String
   kodeMk8       String
   namaMk8       String
   nilai8        String
-  sks8          Int
+  sks8          String
   kodeMk9       String
   namaMk9       String
   nilai9        String
-  sks9          Int
+  sks9          String
   kodeMk10      String
   namaMk10      String
   nilai10       String
-  sks10         Int
-  totalSks      Int
-  ipk           Float
+  sks10         String
+  totalSks      String
+  ipk           String
   signature     String
   key           Key        @relation(fields: [publicKey], references: [key])
   publicKey     String
