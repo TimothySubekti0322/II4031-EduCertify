@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
       const key = await prisma.key.findUnique({
-        where: { key: id },
+        where: { id: parseInt(id) },
       });
 
       if (!key) {

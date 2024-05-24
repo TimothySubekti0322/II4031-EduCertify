@@ -24,7 +24,7 @@ const postKeyHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     // validate key data
-    if (!key.key) {
+    if (!key.publicKeyE || !key.publicKeyN) {
       return res.status(200).json({ message: "key is required", status: 400 });
     }
 
