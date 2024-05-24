@@ -30,7 +30,7 @@ function hashStringTo32Bytes(inputString: string) {
 const downloadTranscript = async ({
   data,
   setLoading,
-  key
+  key,
 }: DownloadTranscriptProps) => {
   setLoading(true);
   try {
@@ -54,6 +54,7 @@ const downloadTranscript = async ({
         console.log("base64data", base64data?.toString());
 
         // Encryption AES here
+        // const key = "abcdefghijklmnopqrstuvwxyz123456";
         // const key = "abcdefghijklmnopqrstuvwxyz123456";
 
         const hashKey = hashStringTo32Bytes(key);
