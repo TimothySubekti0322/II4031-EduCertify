@@ -14,6 +14,22 @@ export const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
   return window.btoa(binary);
 };
 
+function hashStringTo32Bytes(inputString: string) {
+  // Create a hash object using the SHA-256 algorithm
+  const hash = crypto.createHash('sha256');
+
+  // Update the hash object with the input string
+  hash.update(inputString);
+
+  // Generate the hash digest and return it as a hexadecimal string
+  const hashDigest = hash.digest('hex');
+
+  // Ensure the hash digest is exactly 32 bytes by truncating or padding
+  const truncatedHashDigest = hashDigest.slice(0, 32); 
+
+  return truncatedHashDigest;
+}
+
 export const handleAnyFileRead = async (
   e: ProgressEvent<FileReader>,
   key: string
@@ -25,8 +41,9 @@ export const handleAnyFileRead = async (
     console.log("content = ", content);
 
     // const key = "abcdefghijklmnopqrstuvwxyz123456";
+    const hashKey = hashStringTo32Bytes(key)
 
-    const decipher = crypto.createDecipheriv(algorithm, key, initialFactor);
+    const decipher = crypto.createDecipheriv(algorithm, hashKey, initialFactor);
 
     const base64Encrypted = content;
     let decrypted = decipher.update(base64Encrypted, "base64", "base64");
