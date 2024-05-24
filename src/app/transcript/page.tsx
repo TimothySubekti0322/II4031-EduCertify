@@ -73,9 +73,10 @@ export default function Transcript() {
                             validated: "unchecked"
                         }));
                     
-                    const decryptedTranscript = decryptTranscript(updatedData);
-                    setTranscript(decryptedTranscript);
-                    console.log(data);
+                    // const decryptedTranscript = decryptTranscript(updatedData);
+                    // setTranscript(decryptedTranscript);
+                    // console.log(data);
+                    setTranscript(updatedData);
                     setTotalPages(Math.ceil(transcript.length ));
                     console.log(Math.ceil(transcript.length ));
                 } else {
@@ -123,7 +124,7 @@ export default function Transcript() {
                                             <th key={idx2} className="border-2 border-purple1 px-4 py-1 w-24 font-normal">{item[col]}</th>
                                         )}
                                         <th className="border-2 border-purple1 px-4 py-1 w-24 font-normal">
-                                        <GeneratePdfForm />
+                                        <GeneratePdfForm transcriptData={item}/>
                                         </th>
                                         <th className="border-2 border-purple1 px-6 py-1 w-24 font-normal ">
                                             <div className="flex justify-center gap-x-2">

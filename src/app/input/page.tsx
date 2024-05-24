@@ -25,7 +25,8 @@ interface Transcript {
     totalSks: number;
     ipk: number;
     signature: string;
-    publicKey: string;
+    publicKeyE: string;
+    publicKeyN: string;
     encryptKey: string;
     [key: string]: any;
 }
@@ -36,7 +37,9 @@ export default function Input() {
     const [kodeMK, setKodeMK] = useState(Array(10).fill(''));
     const [nilai, setNilai] = useState(Array(10).fill(''));
     const [kaprodi, setSelectedKaprodi] = useState('');
-    const [publicKey, setPublicKey] = useState('');
+    const [publicKeyE, setPublicKeyE] = useState('');
+    const [publicKeyN, setPublicKeyN] = useState('');
+    const [keyId, setKeyId] = useState('');
     const [privateKey, setPrivateKey] = useState('');
     const [daftarKaprodi, setDaftarKaprodi] = useState([]);
     const [encryptKey, setEncryptKey] = useState('');
@@ -63,8 +66,13 @@ export default function Input() {
     const handleKaprodiChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         const selectedKaprodi = event.target.value;
         setSelectedKaprodi(selectedKaprodi);
-        const selectedKey = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.key || '';
-        setPublicKey(selectedKey);
+        const selectedKeyE = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.publicKeyE || '';
+        setPublicKeyE(selectedKeyE);
+        const selectedKeyN = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.publicKeyN || '';
+        setPublicKeyN(selectedKeyN);
+        const selectedKeyID = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.id || '';
+        setKeyId(selectedKeyID);
+        console.log(publicKeyN, keyId);
     };
 
     const handleCourseChange = (index: number, value: string) => {
@@ -85,7 +93,7 @@ export default function Input() {
         setKodeMK(["MA1101", "FI1101", "KU1001", "KU1102", "KU1011", "KU1024", "MA1201", "FI1201", "IF1210", "KU1202"]);
         setNilai(["A", "B", "C", "D", "A", "A", "B", "C", "T", "A"]);
         // setSelectedKaprodi('Basuki');
-        setPrivateKey('defaultPrivateKey');
+        setPrivateKey('15248004353');
         setEncryptKey('encryptKey123');
     };
 
@@ -116,29 +124,70 @@ export default function Input() {
         const temp_ipk = (totalWeightedScores / totalSKS);
         const ipk = parseFloat(temp_ipk.toFixed(2));
 
+        // const transcript: Transcript = {
+        //     nim: NIM,
+        //     nama: namaMahasiswa,
+        //     totalSks: totalSKS,
+        //     ipk,
+        //     signature: privateKey,
+        //     publicKey,
+        //     encryptKey,
+        // };
+
+        // for (let i = 0; i < 10; i++) {
+        //     transcript[`kodeMk${i + 1}`] = kodeMK[i];
+        //     transcript[`namaMk${i + 1}`] = mataKuliah[i]?.mataKuliah || '';
+        //     transcript[`nilai${i + 1}`] = nilai[i];
+        //     transcript[`sks${i + 1}`] = mataKuliah[i]?.SKS || 0;
+        // }
+
         const transcript: Transcript = {
             nim: NIM,
             nama: namaMahasiswa,
+            kodeMk1: kodeMK[0], namaMk1: mataKuliah[0]?.mataKuliah || '', nilai1: nilai[0], sks1: mataKuliah[0]?.SKS || '',
+            kodeMk2: kodeMK[1], namaMk2: mataKuliah[1]?.mataKuliah || '', nilai2: nilai[1], sks2: mataKuliah[1]?.SKS || '',
+            kodeMk3: kodeMK[2], namaMk3: mataKuliah[2]?.mataKuliah || '', nilai3: nilai[2], sks3: mataKuliah[2]?.SKS || '',
+            kodeMk4: kodeMK[3], namaMk4: mataKuliah[3]?.mataKuliah || '', nilai4: nilai[3], sks4: mataKuliah[3]?.SKS || '',
+            kodeMk5: kodeMK[4], namaMk5: mataKuliah[4]?.mataKuliah || '', nilai5: nilai[4], sks5: mataKuliah[4]?.SKS || '',
+            kodeMk6: kodeMK[5], namaMk6: mataKuliah[5]?.mataKuliah || '', nilai6: nilai[5], sks6: mataKuliah[5]?.SKS || '',
+            kodeMk7: kodeMK[6], namaMk7: mataKuliah[6]?.mataKuliah || '', nilai7: nilai[6], sks7: mataKuliah[6]?.SKS || '',
+            kodeMk8: kodeMK[7], namaMk8: mataKuliah[7]?.mataKuliah || '', nilai8: nilai[7], sks8: mataKuliah[7]?.SKS || '',
+            kodeMk9: kodeMK[8], namaMk9: mataKuliah[8]?.mataKuliah || '', nilai9: nilai[8], sks9: mataKuliah[8]?.SKS || '',
+            kodeMk10: kodeMK[9], namaMk10: mataKuliah[9]?.mataKuliah || '', nilai10: nilai[9], sks10: mataKuliah[9]?.SKS || '',
             totalSks: totalSKS,
             ipk,
-            signature: privateKey,
-            publicKey,
+            keyId: keyId,
+            publicKeyE,
+            publicKeyN,
+            signature: "temp",
             encryptKey,
         };
-
-        for (let i = 0; i < 10; i++) {
-            transcript[`kodeMk${i + 1}`] = kodeMK[i];
-            transcript[`namaMk${i + 1}`] = mataKuliah[i]?.mataKuliah || '';
-            transcript[`nilai${i + 1}`] = nilai[i];
-            transcript[`sks${i + 1}`] = mataKuliah[i]?.SKS || 0;
-        }
-
+        
+        const transcriptForHashing = {
+            nim: transcript.nim,
+            nama: transcript.nama,
+            kodeMk1: transcript.kodeMk1, namaMk1: transcript.namaMk1, nilai1: transcript.nilai1, sks1: transcript.sks1,
+            kodeMk2: transcript.kodeMk2, namaMk2: transcript.namaMk2, nilai2: transcript.nilai2, sks2: transcript.sks2,
+            kodeMk3: transcript.kodeMk3, namaMk3: transcript.namaMk3, nilai3: transcript.nilai3, sks3: transcript.sks3,
+            kodeMk4: transcript.kodeMk4, namaMk4: transcript.namaMk4, nilai4: transcript.nilai4, sks4: transcript.sks4,
+            kodeMk5: transcript.kodeMk5, namaMk5: transcript.namaMk5, nilai5: transcript.nilai5, sks5: transcript.sks5,
+            kodeMk6: transcript.kodeMk6, namaMk6: transcript.namaMk6, nilai6: transcript.nilai6, sks6: transcript.sks6,
+            kodeMk7: transcript.kodeMk7, namaMk7: transcript.namaMk7, nilai7: transcript.nilai7, sks7: transcript.sks7,
+            kodeMk8: transcript.kodeMk8, namaMk8: transcript.namaMk8, nilai8: transcript.nilai8, sks8: transcript.sks8,
+            kodeMk9: transcript.kodeMk9, namaMk9: transcript.namaMk9, nilai9: transcript.nilai9, sks9: transcript.sks9,
+            kodeMk10: transcript.kodeMk10, namaMk10: transcript.namaMk10, nilai10: transcript.nilai10, sks10: transcript.sks10,
+            totalSks: transcript.totalSks,
+            ipk: transcript.ipk,
+            keyId: transcript.keyId,
+            publicKeyE: transcript.publicKeyE,
+            publicKeyN: transcript.publicKeyN,
+        };
+        
         // CREATING DIGITAL SIGNATURE
         // 1. message --> hash --> message Digest
         // 2. message digest --> encrypt (private key) --> signature
-        const digest = keccak256(String(transcript))
-        // transcript.signature = RSA.encryptText(digest, privateKey, publicKey);
-        transcript.signature = digest;
+        const digest = keccak256(JSON.stringify(transcriptForHashing));
+        transcript.signature = RSA.encryptText(digest, privateKey, publicKeyN);        // transcript.signature = digest;
         // console.log(signature);
 
         // ENCRYPTING EVERY FIELD WITH RC4 ENCRYPTION
@@ -146,7 +195,7 @@ export default function Input() {
 
         // Encrypting each field except signature and encryptKey
         Object.keys(transcript).forEach((key) => {
-            if (key !== 'signature' && key !== 'encryptKey' && key !=='publicKey') {
+            if (key !== 'signature' && key !== 'encryptKey' && key !== 'keyId' ) {
                 transcript[key] = Base64.encode(RC4.encrypt(String(transcript[key]), encryptKeyUse));
             }
         });
