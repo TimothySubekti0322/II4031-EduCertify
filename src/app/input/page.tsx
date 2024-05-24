@@ -25,7 +25,8 @@ interface Transcript {
     totalSks: number;
     ipk: number;
     signature: string;
-    publicKey: string;
+    publicKeyE: string;
+    publicKeyN: string;
     encryptKey: string;
     [key: string]: any;
 }
@@ -36,7 +37,9 @@ export default function Input() {
     const [kodeMK, setKodeMK] = useState(Array(10).fill(''));
     const [nilai, setNilai] = useState(Array(10).fill(''));
     const [kaprodi, setSelectedKaprodi] = useState('');
-    const [publicKey, setPublicKey] = useState('');
+    const [publicKeyE, setPublicKeyE] = useState('');
+    const [publicKeyN, setPublicKeyN] = useState('');
+    const [keyId, setKeyId] = useState('');
     const [privateKey, setPrivateKey] = useState('');
     const [daftarKaprodi, setDaftarKaprodi] = useState([]);
     const [encryptKey, setEncryptKey] = useState('');
@@ -63,8 +66,13 @@ export default function Input() {
     const handleKaprodiChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         const selectedKaprodi = event.target.value;
         setSelectedKaprodi(selectedKaprodi);
-        const selectedKey = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.key || '';
-        setPublicKey(selectedKey);
+        const selectedKeyE = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.publicKeyE || '';
+        setPublicKeyE(selectedKeyE);
+        const selectedKeyN = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.publicKeyN || '';
+        setPublicKeyN(selectedKeyN);
+        const selectedKeyID = daftarKaprodi.find(item => item.owner === selectedKaprodi)?.id || '';
+        setKeyId(selectedKeyID);
+        console.log(publicKeyN, keyId);
     };
 
     const handleCourseChange = (index: number, value: string) => {
@@ -85,7 +93,7 @@ export default function Input() {
         setKodeMK(["MA1101", "FI1101", "KU1001", "KU1102", "KU1011", "KU1024", "MA1201", "FI1201", "IF1210", "KU1202"]);
         setNilai(["A", "B", "C", "D", "A", "A", "B", "C", "T", "A"]);
         // setSelectedKaprodi('Basuki');
-        setPrivateKey('defaultPrivateKey');
+        setPrivateKey('15248004353');
         setEncryptKey('encryptKey123');
     };
 
@@ -149,7 +157,9 @@ export default function Input() {
             totalSks: totalSKS,
             ipk,
             signature: "temp",
-            publicKey,
+            keyId: keyId,
+            publicKeyE,
+            publicKeyN,
             encryptKey,
         };
         
@@ -157,8 +167,9 @@ export default function Input() {
         // 1. message --> hash --> message Digest
         // 2. message digest --> encrypt (private key) --> signature
         const digest = keccak256(String(transcript))
-        // transcript.signature = RSA.encryptText(digest, privateKey, publicKey);
-        transcript.signature = digest;
+        console.log("pubkeyN", publicKeyN); 
+        transcript.signature = RSA.encryptText(digest, privateKey, publicKeyN);
+        // transcript.signature = digest;
         // console.log(signature);
 
         // ENCRYPTING EVERY FIELD WITH RC4 ENCRYPTION
@@ -166,7 +177,7 @@ export default function Input() {
 
         // Encrypting each field except signature and encryptKey
         Object.keys(transcript).forEach((key) => {
-            if (key !== 'signature' && key !== 'encryptKey' && key !=='publicKey') {
+            if (key !== 'signature' && key !== 'encryptKey' && key !== 'keyId' ) {
                 transcript[key] = Base64.encode(RC4.encrypt(String(transcript[key]), encryptKeyUse));
             }
         });

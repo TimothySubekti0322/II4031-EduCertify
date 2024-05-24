@@ -1,47 +1,41 @@
-import { decode as atob, encode as btoa } from "base-64";
+import { encode as btoa, decode as atob } from 'js-base64';
 
 const RSA = {
-  encryptText: (message: string, e:string, n:string) => {
+  encryptText: (message: string, e: string, n: string): string => {
     let cypher = "";
     let messageAscii = "";
-    const nLength = n.toString().length;
-    let asciiBlock = 0n;
-
+    const nLength = n.length;
+    let asciiBlock;
+    console.log("m", n);
+    
     for (let i = 0; i < message.length; i++) {
-      messageAscii += message
-        .charAt(i)
-        .charCodeAt()
-        .toString()
-        .padStart(3, "0");
+      messageAscii += message.charAt(i).charCodeAt(0).toString().padStart(3, "0");
     }
 
     while (messageAscii !== "") {
       asciiBlock = BigInt(messageAscii.substr(0, 4).padEnd(4, "0"));
       messageAscii = messageAscii.slice(4);
-      cypher += encrypt
-        .exponent(asciiBlock, e, n)
-        .toString()
-        .padStart(nLength, "0");
+      cypher += RSA.exponent(asciiBlock, e, n).toString().padStart(nLength, "0");
     }
     return btoa(cypher);
   },
 
-  encrypt64: (message: string, e: string, n: string) => {
+  encrypt64: (message: string, e: string, n: string): string => {
     const messageText = atob(message);
-    return encrypt.encryptText(messageText, e, n);
+    return RSA.encryptText(messageText, e, n);
   },
 
-  decryptText: (cypher: string, d: string, n: string) => {
+  decryptText: (cypher: string, d: string, n: string): string => {
     let cypherText = atob(cypher);
     let message = "";
     let decrypted = "";
-    let nLength = n.toString().length;
+    const nLength = n.length;
     let messageTemp = 0;
 
-    while (cypherText > 0n) {
-      let cTemp = BigInt(cypherText.substr(0, nLength));
+    while (cypherText.length > 0) {
+      const cTemp = BigInt(cypherText.substr(0, nLength));
       cypherText = cypherText.slice(nLength);
-      message += encrypt.exponent(cTemp, d, n).toString().padStart(4, "0");
+      message += RSA.exponent(cTemp, d, n).toString().padStart(4, "0");
     }
 
     while (message !== "") {
@@ -52,25 +46,26 @@ const RSA = {
     return decrypted;
   },
 
-  decrypt64: (cypher: string, d: string, n: string) => {
-    return btoa(decryptText(cypher, d, n));
+  decrypt64: (cypher: string, d: string, n: string): string => {
+    return btoa(RSA.decryptText(cypher, d, n));
   },
 
-  exponent: (base: string, exponent: string, modulus: string) => {
-    let numBase = BigInt(base);
+  exponent: (base: string | bigint, exponent: string, modulus: string): bigint => {
+    let numBase = typeof base === 'bigint' ? base : BigInt(base);
+    console.log(modulus);
     let numExponent = BigInt(exponent);
     const numModulus = BigInt(modulus);
-    if (numModulus === 0n || numModulus === 1n) return 0n;
+    console.log(numModulus);
+    if (numModulus === BigInt(1) || numModulus === BigInt(1)) return BigInt(0);
 
-    let result = 1n;
+    let result = BigInt(1);
     numBase = numBase % numModulus;
 
-    // pangkatkan
-    while (numExponent > 0n) {
-      if (numExponent % 2n === 1n) {
+    while (numExponent > BigInt(0)) {
+      if (numExponent % BigInt(2) === BigInt(1)) {
         result = (result * numBase) % numModulus;
       }
-      numExponent = numExponent / 2n;
+      numExponent = numExponent / BigInt(2);
       numBase = (numBase * numBase) % numModulus;
     }
 
