@@ -42,12 +42,12 @@ const PRGAEncyrpt = (arrayS: number[], text: string, key: string) => {
 
     // Find t
     const t = (arrayS[i] + arrayS[j]) % 256;
-    console.log(`arrayS[${i}] = `, arrayS[i], ` | arrayS[${j}] = `, arrayS[j]);
-    console.log("t = ", t);
+    // console.log(`arrayS[${i}] = `, arrayS[i], ` | arrayS[${j}] = `, arrayS[j]);
+    // console.log("t = ", t);
 
     // Find u (u is the value of S[t] which is used to encrypt the plain text character)
     const u = arrayS[t];
-    console.log("u = ", u);
+    // console.log("u = ", u);
 
     // Encrypt the plain text character
     const plainChar: number = text.charCodeAt(idx);
@@ -136,7 +136,7 @@ const PRGADecrypt = (arrayS: number[], text: string, key: string) => {
   let j = 0;
   let result = "";
   for (let idx = 0; idx < text.length; idx++) {
-    console.log("===============DECRYPT===================");
+    // console.log("===============DECRYPT===================");
     // Find i and j
     i = (i + 1) % 256;
     i = (i + key.charCodeAt(idx % key.length)) % 256;
@@ -148,12 +148,12 @@ const PRGADecrypt = (arrayS: number[], text: string, key: string) => {
 
     // Find t
     const t = (arrayS[i] + arrayS[j]) % 256;
-    console.log(`arrayS[${i}] = `, arrayS[i], ` | arrayS[${j}] = `, arrayS[j]);
-    console.log("t = ", t);
+    // console.log(`arrayS[${i}] = `, arrayS[i], ` | arrayS[${j}] = `, arrayS[j]);
+    // console.log("t = ", t);
 
     // Find u (u is the value of S[t] which is used to encrypt the plain text character)
     const u = arrayS[t];
-    console.log("u = ", u);
+    // console.log("u = ", u);
 
     // Find the actual c , because in encrypt we implement vigenere cipher on c
     // const c =
@@ -162,7 +162,7 @@ const PRGADecrypt = (arrayS: number[], text: string, key: string) => {
 
     // the actual c is XOR with the u to get the plain text character
     const plainChar = c ^ u;
-    console.log("c = ", c, " | plainChar = ", plainChar);
+    // console.log("c = ", c, " | plainChar = ", plainChar);
 
     // Debugging
     // console.log("u = ", u, " c = ", c, "plainChar = ", plainChar);
@@ -218,13 +218,13 @@ const RC4 = {
   encrypt: (text: string, key: string) => {
     const KSAresult = KSA(key);
     const result = PRGAEncyrpt(KSAresult, text, key);
-    console.log("result = ", result);
+    // console.log("result = ", result);
     return result;
   },
   decrypt: (text: string, key: string) => {
     const KSAresult = KSA(key);
     const result = PRGADecrypt(KSAresult, text, key);
-    console.log("result = ", result);
+    // console.log("result = ", result);
     return result;
   },
   encryptFile: (arr: Uint8Array, key: string) => {
