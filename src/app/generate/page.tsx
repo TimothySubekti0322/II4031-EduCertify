@@ -30,9 +30,9 @@ export default function Generate() {
     num2: ""
   });
   const [key, setKey] = useState<KeyType>({
-    publicKey: undefined,
-    privateKey: undefined,
-    modulus: undefined
+    publicKeyE: undefined,
+    publicKeyN: undefined,
+    owner: undefined
   });
 
   const validateSubmit = () => {
@@ -50,7 +50,6 @@ export default function Generate() {
     } else if (input.num1 === input.num2) {
       setErrorNum("Numbers must be different.");
       console.log("2");
-
     } else {
       const prime1 = parseInt(input.num1);
       const checkPrime1 = checkNumberPositivePrime(prime1);
@@ -77,18 +76,20 @@ export default function Generate() {
     if (errorName==='' && errorNum===''){
       console.log(errorName, errorNum);
       const newKey = generateKey(input.num1, input.num2);
+      console.log("newKey", newKey);
+        key = ({
+          publicKeyE: newKey.publicKey.toString(),
+          publicKeyN: newKey.modulus.toString(),
+          owner: input.name
+        })
 
-        setKey({
-          publicKey: newKey.publicKey,
-          privateKey: newKey.privateKey,
-          modulus: newKey.modulus,
-        });
+        console.log(form);
 
         try {
-          const response = await axios.post('/api/keys', newKey);
+          const response = await axios.post('/api/key', form);
           const data = response.data;
           if (data.status === 200) {
-              console.log('Submitted Data:', newKey);
+              console.log('Submitted Data:', form);
               setGenerated(true);
           } else {
               console.error('Failed to submit key:', data.message);
@@ -129,6 +130,7 @@ export default function Generate() {
   ) => {
     const { name, value } = event.target;
     setInput({ ...input, [name]: value });
+    console.log(input);
   };
 
   return (
@@ -140,15 +142,15 @@ export default function Generate() {
         </div>
         <div className="items-center w-full">
           <label
-            htmlFor="key"
+            htmlFor="name"
             className="block  text-sm font-medium whitesspace-nowrap"
           >
             Input Name:
           </label>
           <div className="w-full border border-2 border-purple1 rounded-lg h-8">
             <input
-              id="key"
-              name="key"
+              id="name"
+              name="name"
               className="w-full rounded-lg h-full mb-1 px-2"
               onChange={handleInputChange}
             ></input>
@@ -158,15 +160,15 @@ export default function Generate() {
         <div className="flex justify-center gap-x-8 mt-8">
           <div className="items-center w-full">
             <label
-              htmlFor="key1"
+              htmlFor="num1"
               className="block text-sm font-medium whitesspace-nowrap"
             >
               Input 1:
             </label>
             <div className="w-full border border-2 border-purple1 rounded-lg h-8">
               <input
-                id="key1"
-                name="key1"
+                id="num1"
+                name="num1"
                 className="w-full rounded-lg h-full mb-1 px-2"
                 onChange={handleInputChange}
               ></input>
@@ -175,15 +177,15 @@ export default function Generate() {
           </div>
           <div className="items-center w-full">
             <label
-              htmlFor="key2"
+              htmlFor="num2"
               className="block  text-sm font-medium whitesspace-nowrap"
             >
               Input 2:
             </label>
             <div className="w-full border border-2 border-purple1 rounded-lg h-8">
               <input
-                id="key2"
-                name="key"
+                id="num2"
+                name="num2"
                 className="w-full rounded-lg h-full px-2"
                 onChange={handleInputChange}
               ></input>
