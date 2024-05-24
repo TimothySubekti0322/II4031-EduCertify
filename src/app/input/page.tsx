@@ -156,20 +156,38 @@ export default function Input() {
             kodeMk10: kodeMK[9], namaMk10: mataKuliah[9]?.mataKuliah || '', nilai10: nilai[9], sks10: mataKuliah[9]?.SKS || '',
             totalSks: totalSKS,
             ipk,
-            signature: "temp",
             keyId: keyId,
             publicKeyE,
             publicKeyN,
+            signature: "temp",
             encryptKey,
+        };
+        
+        const transcriptForHashing = {
+            nim: transcript.nim,
+            nama: transcript.nama,
+            kodeMk1: transcript.kodeMk1, namaMk1: transcript.namaMk1, nilai1: transcript.nilai1, sks1: transcript.sks1,
+            kodeMk2: transcript.kodeMk2, namaMk2: transcript.namaMk2, nilai2: transcript.nilai2, sks2: transcript.sks2,
+            kodeMk3: transcript.kodeMk3, namaMk3: transcript.namaMk3, nilai3: transcript.nilai3, sks3: transcript.sks3,
+            kodeMk4: transcript.kodeMk4, namaMk4: transcript.namaMk4, nilai4: transcript.nilai4, sks4: transcript.sks4,
+            kodeMk5: transcript.kodeMk5, namaMk5: transcript.namaMk5, nilai5: transcript.nilai5, sks5: transcript.sks5,
+            kodeMk6: transcript.kodeMk6, namaMk6: transcript.namaMk6, nilai6: transcript.nilai6, sks6: transcript.sks6,
+            kodeMk7: transcript.kodeMk7, namaMk7: transcript.namaMk7, nilai7: transcript.nilai7, sks7: transcript.sks7,
+            kodeMk8: transcript.kodeMk8, namaMk8: transcript.namaMk8, nilai8: transcript.nilai8, sks8: transcript.sks8,
+            kodeMk9: transcript.kodeMk9, namaMk9: transcript.namaMk9, nilai9: transcript.nilai9, sks9: transcript.sks9,
+            kodeMk10: transcript.kodeMk10, namaMk10: transcript.namaMk10, nilai10: transcript.nilai10, sks10: transcript.sks10,
+            totalSks: transcript.totalSks,
+            ipk: transcript.ipk,
+            keyId: transcript.keyId,
+            publicKeyE: transcript.publicKeyE,
+            publicKeyN: transcript.publicKeyN,
         };
         
         // CREATING DIGITAL SIGNATURE
         // 1. message --> hash --> message Digest
         // 2. message digest --> encrypt (private key) --> signature
-        const digest = keccak256(String(transcript))
-        console.log("pubkeyN", publicKeyN); 
-        transcript.signature = RSA.encryptText(digest, privateKey, publicKeyN);
-        // transcript.signature = digest;
+        const digest = keccak256(JSON.stringify(transcriptForHashing));
+        transcript.signature = RSA.encryptText(digest, privateKey, publicKeyN);        // transcript.signature = digest;
         // console.log(signature);
 
         // ENCRYPTING EVERY FIELD WITH RC4 ENCRYPTION
