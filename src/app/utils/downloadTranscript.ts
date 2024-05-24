@@ -9,7 +9,6 @@ interface DownloadTranscriptProps {
   data: Transcript;
   setLoading: (loading: boolean) => void;
   key: string;
-  key: string;
 }
 
 const downloadTranscript = async ({
