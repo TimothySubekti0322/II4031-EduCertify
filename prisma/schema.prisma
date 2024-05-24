@@ -14,7 +14,9 @@ datasource db {
 }
 
 model Key {
-  key           String    @id
+  id            Int       @id @default(autoincrement())
+  publicKeyE    Int  
+  publicKeyN    Int  
   owner         String
   transcript    Transcript[]
 }
@@ -64,8 +66,10 @@ model Transcript {
   sks10         String
   totalSks      String
   ipk           String
+  key           Key       @relation(fields: [keyId], references: [id])
+  keyId         Int            
+  publicKeyE    String
+  publicKeyN    String
   signature     String
-  key           Key        @relation(fields: [publicKey], references: [key])
-  publicKey     String
   encryptKey    String
 }

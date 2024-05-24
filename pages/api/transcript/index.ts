@@ -47,8 +47,10 @@ const transcriptFields = [
   "sks10",
   "totalSks",
   "ipk",
+  "keyId",
+  "publicKeyE",
+  "publicKeyN",
   "signature",
-  "publicKey",
   "encryptKey",
 ];
 
@@ -58,6 +60,8 @@ const getTranscriptsHandler = async (
 ) => {
   try {
     const transcripts = await prisma.transcript.findMany();
+
+    console.log(transcripts);
     if (transcripts.length === 0) {
       return res.status(200).json({
         message: "data not found",
@@ -70,7 +74,7 @@ const getTranscriptsHandler = async (
     for (const transcript of transcripts) {
       const owner = await prisma.key.findUnique({
         where: {
-          key: transcript.publicKey,
+          id: transcript.keyId,
         },
       });
 
@@ -108,6 +112,8 @@ const postTranscriptHandler = async (
           .json({ message: `${field} is required`, status: 400 });
       }
     }
+
+    console.log("Tes2");
 
     // Insert data to database
     await prisma.transcript.create({ data: transcript });
