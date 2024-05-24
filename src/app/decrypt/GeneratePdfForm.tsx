@@ -3,6 +3,8 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import downloadTranscript from "../utils/downloadTranscript";
+import { Transcript2 } from "../transcript/record";
+import { Transcript } from "../transcript/transcript.type";
 
 // const transcriptData = {
 //   nim: "18221063",
@@ -55,16 +57,18 @@ import downloadTranscript from "../utils/downloadTranscript";
 //   owner: "Timothy",
 // };
 
-const GeneratePdfForm = (transcriptData: any) => {
-  const [name, setName] = useState("");
+interface GeneratePdfFormProps {
+  transcriptData: Transcript2
+}
 
+const GeneratePdfForm: React.FC<GeneratePdfFormProps> = ({transcriptData}) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const {validated, ...data} = transcriptData.transcriptData;
+    const { validated, ...data } = transcriptData;
     console.log(data);
-    downloadTranscript({ data: data, setLoading , data.encryptKey});
+    downloadTranscript({ data, setLoading , key: data.encryptKey});
   };
 
   return (

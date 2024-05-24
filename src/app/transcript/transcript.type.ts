@@ -51,4 +51,4 @@ interface Transcript {
   owner: string;
 }
 
-export { Transcript };
+export type { Transcript };

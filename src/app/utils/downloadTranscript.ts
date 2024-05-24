@@ -1,4 +1,4 @@
-import type { Transcript } from "@prisma/client";
+import type { Transcript } from "../transcript/transcript.type";
 import toast from "react-hot-toast";
 import crypto from "crypto";
 import { initialFactor, algorithm } from "../static/AES";
