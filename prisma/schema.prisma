@@ -15,8 +15,8 @@ datasource db {
 
 model Key {
   id            Int       @id @default(autoincrement())
-  publicKeyE    Int  
-  publicKeyN    Int  
+  publicKeyE    String  
+  publicKeyN    String  
   owner         String
   transcript    Transcript[]
 }
