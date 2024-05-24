@@ -279,8 +279,9 @@ export default function Transcript() {
                               className="w-8 h-6 "
                             ></img>
                             <button
+                            key = "idx"
                               className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
-                              onClick={handleValidate}
+                              onClick={() => handleValidate(plainTranscript[idx])}
                             >
                               Verify Data
                             </button>
@@ -323,8 +324,9 @@ export default function Transcript() {
                               className="w-8 h-6 "
                             ></img>
                             <button
+                            key = "idx"
                               className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
-                              onClick={handleValidate}
+                              onClick={() => handleValidate(plainTranscript[idx])}
                             >
                               Verify Data
                             </button>
