@@ -36,10 +36,12 @@ export default function Generate() {
   });
 
   const validateSubmit = () => {
+    const isNameTaken = usedKeys.some(item => item.owner === input.name);
+
     if (input.name === '') {
       setErrorName("Name can't be empty.")
-    // } else if (input.name in usedKeys) {
-    //   setErrorName("Name is taken. Choose another name!")
+    } else if (isNameTaken) {
+      setErrorName("Name is taken. Choose another name!")
     } else {
       setErrorName('');
     }

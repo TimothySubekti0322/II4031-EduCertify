@@ -1,4 +1,4 @@
-import type { Transcript } from "@prisma/client";
+import type { Transcript } from "../transcript/transcript.type";
 import toast from "react-hot-toast";
 import crypto from "crypto";
 import { initialFactor, algorithm } from "../static/AES";
@@ -8,11 +8,13 @@ type Data = String | ArrayBuffer | null;
 interface DownloadTranscriptProps {
   data: Transcript;
   setLoading: (loading: boolean) => void;
+  key: string;
 }
 
 const downloadTranscript = async ({
   data,
   setLoading,
+  key
 }: DownloadTranscriptProps) => {
   setLoading(true);
   try {
@@ -36,7 +38,7 @@ const downloadTranscript = async ({
         console.log("base64data", base64data?.toString());
 
         // Encryption AES here
-        const key = "abcdefghijklmnopqrstuvwxyz123456";
+        // const key = "abcdefghijklmnopqrstuvwxyz123456";
 
         const cipher = crypto.createCipheriv(algorithm, key, initialFactor);
 
