@@ -5,6 +5,10 @@ import { RecordType } from './record.d';
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from 'axios';
 import Pagination from "../components/Pagination";
+import {RSA} from "../utils/RSA";
+import RC4 from "../utils/RC4";
+import { keccak256 } from "js-sha3";
+import { Base64 } from "js-base64";
 
 export default function Transcript() {
     // const [transcript, setTranscript] = useState<RecordType[]>();
@@ -24,11 +28,36 @@ export default function Transcript() {
     const filledColumns: string[] = ["nama", "nim", "kodeMk1", "namaMk1", "nilai1", "sks1", "kodeMk2", "namaMk2", "nilai2", "sks2", "kodeMk3", "namaMk3", "nilai3", "sks3", "kodeMk4", "namaMk4", "nilai4", "sks4", "kodeMk5", "namaMk5", "nilai5", "sks5", "kodeMk6", "namaMk6", "nilai6", "sks6", "kodeMk7", "namaMk7", "nilai7", "sks7", "kodeMk8", "namaMk8", "nilai8", "sks8", "kodeMk9", "namaMk9", "nilai9", "sks9", "kodeMk10", "namaMk10", "nilai10", "sks10", "ipk", "publicKey", "signature"];
 
     const handleValidate = () => {
+        // VALIDASI DIGITAL SIGNATURE
+        // 1. Decrypt Signature with publicKey => message digest
+        // 2. Decrypt database with encryptedKey + Hash => message digest
+        // 3. Compare message digest. If same (validated = "valid") else (validate = "invalid")
 
+        // Langkah 1. Decrypt signature with publicKey
+        const signatureDigest = RSA.decryptText(transcript.signature, transcript.publicKeyE, transcript.publicKeyN);
+
+        // Langkah 2. Hash database
+        const messageDigest = keccak256(String(transcript));
+
+        // Langkah 3. Compare message digest
+        if (signatureDigest === messageDigest) {
+            transcript.validated = 'valid';
+        } else {
+            transcript.validated = 'invalid';
+        }
     }
 
     const handleDownload = () => {
 
+    }
+
+    const decryptTranscript = (transcript: { [x: string]: any; }) => {
+        Object.keys(transcript).forEach((key) => {
+            if (key !== 'signature' && key !== 'encryptKey') {
+                transcript[key] = RC4.decrypt(Base64.decode(transcript[key]), encryptKeyUse);
+            }
+        });
+        return transcript;
     }
 
 
@@ -43,7 +72,8 @@ export default function Transcript() {
                             validated: "unchecked"
                         }));
                     
-                    setTranscript(updatedData);
+                    const decryptedTranscript = decryptTranscript(updatedData);
+                    setTranscript(decryptedTranscript);
                     console.log(data);
                     setTotalPages(Math.ceil(transcript.length ));
                     console.log(Math.ceil(transcript.length ));
