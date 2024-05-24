@@ -6,7 +6,8 @@ const RSA = {
     let messageAscii = "";
     const nLength = n.length;
     let asciiBlock;
-
+    console.log("m", n);
+    
     for (let i = 0; i < message.length; i++) {
       messageAscii += message.charAt(i).charCodeAt(0).toString().padStart(3, "0");
     }
@@ -51,8 +52,10 @@ const RSA = {
 
   exponent: (base: string | bigint, exponent: string, modulus: string): bigint => {
     let numBase = typeof base === 'bigint' ? base : BigInt(base);
+    console.log(modulus);
     let numExponent = BigInt(exponent);
     const numModulus = BigInt(modulus);
+    console.log(numModulus);
     if (numModulus === BigInt(1) || numModulus === BigInt(1)) return BigInt(0);
 
     let result = BigInt(1);
