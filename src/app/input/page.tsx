@@ -297,7 +297,7 @@ export default function Input() {
 
     // Encrypting each field except signature and encryptKey
     Object.keys(transcript).forEach((key) => {
-      if (key !== "signature" && key !== "encryptKey" && key !== "keyId") {
+      if (key !== "encryptKey" && key !== "keyId") {
         transcript[key] = Base64.encode(
           RC4.encrypt(String(transcript[key]), encryptKeyUse)
         );
