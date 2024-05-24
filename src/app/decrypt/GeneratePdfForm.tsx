@@ -64,7 +64,7 @@ const GeneratePdfForm = (transcriptData: any) => {
     e.preventDefault();
     const {validated, ...data} = transcriptData.transcriptData;
     console.log(data);
-    downloadTranscript({ data: data, setLoading });
+    downloadTranscript({ data: data, setLoading , data.encryptKey});
   };
 
   return (

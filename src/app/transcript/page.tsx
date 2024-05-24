@@ -48,10 +48,6 @@ export default function Transcript() {
         }
     }
 
-    const handleDownload = () => {
-
-    }
-
     const decryptTranscript = (transcript: { [x: string]: any; }) => {
         Object.keys(transcript).forEach((key) => {
             if (key !== 'signature' && key !== 'encryptKey') {
