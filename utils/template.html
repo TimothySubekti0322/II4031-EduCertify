@@ -23,6 +23,11 @@
             font-size: 14px;
         }
 
+        .publicKey {
+            width: 600px;
+            word-wrap: break-word;
+        }
+
         .center-title {
             width: 100%;
             text-align: center;
@@ -182,7 +187,7 @@
         <div class="signature-section">
             <p class="content">Ketua Program Studi</p>
             <p class="content paddingTop-16">--Begin signature--</p>
-            <p class="content">{{publicKey}}</p>
+            <p class="content publicKey">{{publicKey}}</p>
             <p class="content paddingBottom-16">--End signature--</p>
             <p class="content">({{owner}})</p>
         </div>

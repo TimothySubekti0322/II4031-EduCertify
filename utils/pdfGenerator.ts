@@ -61,7 +61,7 @@ export const generatePdf = async (
     htmlContent = htmlContent.replace("{{nilai10}}", data.nilai10);
     htmlContent = htmlContent.replace("{{totalSks}}", data.totalSks.toString());
     htmlContent = htmlContent.replace("{{ipk}}", data.ipk.toString());
-    htmlContent = htmlContent.replace("{{publicKey}}", data.publicKey);
+    htmlContent = htmlContent.replace("{{publicKey}}", data.signature);
     htmlContent = htmlContent.replace("{{owner}}", data.owner);
 
     browser = await puppeteer.launch({
