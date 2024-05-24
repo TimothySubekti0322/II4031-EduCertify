@@ -116,23 +116,43 @@ export default function Input() {
         const temp_ipk = (totalWeightedScores / totalSKS);
         const ipk = parseFloat(temp_ipk.toFixed(2));
 
+        // const transcript: Transcript = {
+        //     nim: NIM,
+        //     nama: namaMahasiswa,
+        //     totalSks: totalSKS,
+        //     ipk,
+        //     signature: privateKey,
+        //     publicKey,
+        //     encryptKey,
+        // };
+
+        // for (let i = 0; i < 10; i++) {
+        //     transcript[`kodeMk${i + 1}`] = kodeMK[i];
+        //     transcript[`namaMk${i + 1}`] = mataKuliah[i]?.mataKuliah || '';
+        //     transcript[`nilai${i + 1}`] = nilai[i];
+        //     transcript[`sks${i + 1}`] = mataKuliah[i]?.SKS || 0;
+        // }
+
         const transcript: Transcript = {
             nim: NIM,
             nama: namaMahasiswa,
+            kodeMk1: kodeMK[0], namaMk1: mataKuliah[0]?.mataKuliah || '', nilai1: nilai[0], sks1: mataKuliah[0]?.SKS || '',
+            kodeMk2: kodeMK[1], namaMk2: mataKuliah[1]?.mataKuliah || '', nilai2: nilai[1], sks2: mataKuliah[1]?.SKS || '',
+            kodeMk3: kodeMK[2], namaMk3: mataKuliah[2]?.mataKuliah || '', nilai3: nilai[2], sks3: mataKuliah[2]?.SKS || '',
+            kodeMk4: kodeMK[3], namaMk4: mataKuliah[3]?.mataKuliah || '', nilai4: nilai[3], sks4: mataKuliah[3]?.SKS || '',
+            kodeMk5: kodeMK[4], namaMk5: mataKuliah[4]?.mataKuliah || '', nilai5: nilai[4], sks5: mataKuliah[4]?.SKS || '',
+            kodeMk6: kodeMK[5], namaMk6: mataKuliah[5]?.mataKuliah || '', nilai6: nilai[5], sks6: mataKuliah[5]?.SKS || '',
+            kodeMk7: kodeMK[6], namaMk7: mataKuliah[6]?.mataKuliah || '', nilai7: nilai[6], sks7: mataKuliah[6]?.SKS || '',
+            kodeMk8: kodeMK[7], namaMk8: mataKuliah[7]?.mataKuliah || '', nilai8: nilai[7], sks8: mataKuliah[7]?.SKS || '',
+            kodeMk9: kodeMK[8], namaMk9: mataKuliah[8]?.mataKuliah || '', nilai9: nilai[8], sks9: mataKuliah[8]?.SKS || '',
+            kodeMk10: kodeMK[9], namaMk10: mataKuliah[9]?.mataKuliah || '', nilai10: nilai[9], sks10: mataKuliah[9]?.SKS || '',
             totalSks: totalSKS,
             ipk,
-            signature: privateKey,
+            signature: "temp",
             publicKey,
             encryptKey,
         };
-
-        for (let i = 0; i < 10; i++) {
-            transcript[`kodeMk${i + 1}`] = kodeMK[i];
-            transcript[`namaMk${i + 1}`] = mataKuliah[i]?.mataKuliah || '';
-            transcript[`nilai${i + 1}`] = nilai[i];
-            transcript[`sks${i + 1}`] = mataKuliah[i]?.SKS || 0;
-        }
-
+        
         // CREATING DIGITAL SIGNATURE
         // 1. message --> hash --> message Digest
         // 2. message digest --> encrypt (private key) --> signature
