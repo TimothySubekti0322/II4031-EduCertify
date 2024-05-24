@@ -246,12 +246,12 @@ export default function Input() {
                         </select>
                     </div>
                 ))}
-                <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-10 rounded content-center">
+                <button onClick={handleSubmit} className="bg-pink1 hover:bg-pink2 text-white font-bold py-2 px-4 mb-10 rounded content-center">
                     Submit Nilai
                 </button>
-                <button onClick={setDefaultValues} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mb-10 rounded content-center">
+                {/* <button onClick={setDefaultValues} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mb-10 rounded content-center">
                     Set Default Values
-                </button>
+                </button> */}
             </div>
         </main>
     );
