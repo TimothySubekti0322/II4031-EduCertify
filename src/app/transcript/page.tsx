@@ -257,7 +257,7 @@ export default function Transcript() {
                           </th>
                         ))}
                         <th className="border-2 border-purple1 px-4 py-1 w-24 font-normal">
-                          <GeneratePdfForm transcriptData={item} />
+                          <GeneratePdfForm transcriptData={plainTranscript[idx]} />
                         </th>
                         <th className="border-2 border-purple1 px-6 py-1 w-24 font-normal ">
                           <div className="flex justify-center gap-x-2">
