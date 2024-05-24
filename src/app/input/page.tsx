@@ -5,6 +5,8 @@ import curriculum from './courses';
 import axios from 'axios';
 // import { sha3 } from 'crypto-js/sha3';
 import { keccak256 } from 'js-sha3';
+import { RSA } from '../utils/RSA';
+import { RC4 } from '../utils/RC4';
 
 const grades = ["A", "B", "C", "D", "E", "T"];
 const gradeValues: { [key: string]: number } = {
@@ -23,7 +25,7 @@ interface Transcript {
     ipk: number;
     signature: string;
     publicKey: string;
-    encryptKey: string | null;
+    encryptKey: string;
     [key: string]: any;
 }
 
@@ -83,6 +85,7 @@ export default function Input() {
         setNilai(["A", "B", "C", "D", "A", "A", "B", "C", "T", "A"]);
         // setSelectedKaprodi('Basuki');
         setPrivateKey('defaultPrivateKey');
+        setEncryptKey('encryptKey123');
     };
 
     const handleSubmit = async () => {
@@ -119,7 +122,7 @@ export default function Input() {
             ipk,
             signature: privateKey,
             publicKey,
-            encryptKey: "encryptedKey123",
+            encryptKey,
         };
 
         for (let i = 0; i < 10; i++) {
@@ -129,23 +132,45 @@ export default function Input() {
             transcript[`sks${i + 1}`] = mataKuliah[i]?.SKS || 0;
         }
 
+        // CREATING DIGITAL SIGNATURE
+        // 1. message --> hash --> message Digest
+        // 2. message digest --> encrypt (private key) --> signature
         transcript.signature = keccak256(String(transcript))
+        // transcript.signature = RSA.encryptText(digest, privateKey, publicKey);
         // console.log(signature);
 
-        try {
-            const response = await axios.post('/api/transcript', transcript);
-            const data = response.data;
-            if (data.status === 200) {
-                console.log('Submitted Data:', transcript);
-                alert(`Data Submitted Successfully! Total SKS: ${totalSKS}, IPK: ${ipk}`);
-            } else {
-                console.error('Failed to submit transcript:', data.message);
-                alert('Failed to submit transcript');
+        // ENCRYPTING EVERY FIELD WITH RC4 ENCRYPTION
+        const encryptKeyUse = transcript.encryptKey;
+
+        // Encrypting each field except signature and encryptKey
+        Object.keys(transcript).forEach((key) => {
+            if (key !== 'signature' && key !== 'encryptKey') {
+                transcript[key] = RC4.encrypt(String(transcript[key]), encryptKeyUse);
             }
-        } catch (error) {
-            console.error('Error submitting transcript:', error);
-            alert('Failed to submit transcript');
-        }
+        });
+
+        Object.keys(transcript).forEach((key) => {
+            if (key !== 'signature' && key !== 'encryptKey') {
+                transcript[key] = RC4.decrypt(String(transcript[key]), encryptKeyUse);
+            }
+        });
+
+
+        // POST TO DATABASE
+        // try {
+        //     const response = await axios.post('/api/transcript', transcript);
+        //     const data = response.data;
+        //     if (data.status === 200) {
+        //         console.log('Submitted Data:', transcript);
+        //         alert(`Data Submitted Successfully! Total SKS: ${totalSKS}, IPK: ${ipk}`);
+        //     } else {
+        //         console.error('Failed to submit transcript:', data.message);
+        //         alert('Failed to submit transcript');
+        //     }
+        // } catch (error) {
+        //     console.error('Error submitting transcript:', error);
+        //     alert('Failed to submit transcript');
+        // }
 
         alert(`Data Submitted Successfully! Total SKS: ${totalSKS}, IPK: ${ipk}`);
         console.log("with JSON", JSON.stringify(transcript));
