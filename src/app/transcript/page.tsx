@@ -159,7 +159,7 @@ export default function Transcript() {
     return transcript.map((item) => {
       const decryptedItem: RecordType = { ...item };
       Object.keys(decryptedItem).forEach((key) => {
-        if (key !== "encryptKey" && key !== "keyId" && key !== "validated") {
+        if (key !== "encryptKey" && key !== "keyId" && key !== "validated" && key !== "owner") {
           const decryptedKey = key as Key;
           const decryptedValue = RC4.decrypt(
             Base64.decode(decryptedItem[decryptedKey] as string),
