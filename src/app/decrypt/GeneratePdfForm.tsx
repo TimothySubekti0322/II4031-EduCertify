@@ -62,6 +62,7 @@ interface GeneratePdfFormProps {
 }
 
 const GeneratePdfForm: React.FC<GeneratePdfFormProps> = ({transcriptData}) => {
+  
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import fs from "fs";
 import path from "path";
 import type { Transcript } from "@prisma/client";
+import chromium from "@sparticuz/chromium-min";
 
 interface TranscriptData extends Transcript {
   owner: string;
@@ -16,7 +17,6 @@ export const generatePdf = async (
     const templatePath = path.join(process.cwd(), "utils", "template.html");
     // const templatePath = "../template/template.html";
     let htmlContent = fs.readFileSync(templatePath, "utf8");
-    console.log("htmlContent : ", htmlContent);
     htmlContent = htmlContent.replace("{{name}}", data.nama);
     htmlContent = htmlContent.replace("{{nim}}", data.nim);
     htmlContent = htmlContent.replace("{{kodeMk1}}", data.kodeMk1);
@@ -67,6 +67,14 @@ export const generatePdf = async (
     browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      // args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+      // defaultViewport: chromium.defaultViewport,
+      // // you have to point to a Chromium tar file here 👇
+      // executablePath: await chromium.executablePath(
+      //   `https://your-uploaded-chromium-pack.tar`
+      // ),
+      // headless: chromium.headless,
+      // ignoreHTTPSErrors: true,
     });
     const page = await browser.newPage();
 
