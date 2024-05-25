@@ -63,19 +63,26 @@ export const generatePdf = async (
     htmlContent = htmlContent.replace("{{ipk}}", data.ipk.toString());
     htmlContent = htmlContent.replace("{{publicKey}}", data.signature);
     htmlContent = htmlContent.replace("{{owner}}", data.owner);
+    
+    // Uncomment this code below if you are using development mode
+    // browser = await puppeteer.launch({
+    //   headless: true,
+    //   args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    // });
 
+    // Comment out this code below if you are using development mode
     browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      // args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-      // defaultViewport: chromium.defaultViewport,
-      // // you have to point to a Chromium tar file here 👇
-      // executablePath: await chromium.executablePath(
-      //   `https://your-uploaded-chromium-pack.tar`
-      // ),
-      // headless: chromium.headless,
-      // ignoreHTTPSErrors: true,
+
+      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+      defaultViewport: chromium.defaultViewport,
+      // you have to point to a Chromium tar file here 👇
+      executablePath: await chromium.executablePath(
+        `https://github.com/Sparticuz/chromium/releases/download/v123.0.1/chromium-v123.0.1-pack.tar`
+      ),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
+
     const page = await browser.newPage();
 
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
