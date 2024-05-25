@@ -49,6 +49,35 @@ Then install all the dependencies by simply run this code on the terminal
   npm install
 ```
 
+```bash
+utils\pdfGenerator.ts ; Line 67
+
+    // Uncomment this code below if you are using development mode
+    // browser = await puppeteer.launch({
+    //   headless: true,
+    //   args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    // });
+```
+
+and commented out this code below
+
+```bash
+utils\pdfGenerator.ts ; Line 73
+
+    // Comment out this code below if you are using development mode
+    browser = await puppeteer.launch({
+
+      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+      defaultViewport: chromium.defaultViewport,
+      // you have to point to a Chromium tar file here 👇
+      executablePath: await chromium.executablePath(
+        `https://github.com/Sparticuz/chromium/releases/download/v123.0.1/chromium-v123.0.1-pack.tar`
+      ),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    });
+```
+
 Next, Create a .env file that contains your Database URL connection. Copy this code below and paste it on your .env file. Change **YOUR_DATABASE_CONNECTION_URL** with your own database url connection.
 
 ```bash
