@@ -3,7 +3,7 @@ import { RSA } from './RSA';
 import { keccak256 } from 'js-sha3';
 import { Transcript2 } from '../transcript/record';
 
-export const handleValidate = (transcript: Transcript2) => {
+export const handleValidate = (plainTranscript: Transcript2) => {
     const {
         nim, nama, kodeMk1, namaMk1, nilai1, sks1,
         kodeMk2, namaMk2, nilai2, sks2,
@@ -16,7 +16,7 @@ export const handleValidate = (transcript: Transcript2) => {
         kodeMk9, namaMk9, nilai9, sks9,
         kodeMk10, namaMk10, nilai10, sks10,
         totalSks, ipk, keyId, publicKeyE, publicKeyN, signature
-    } = transcript;
+    } = plainTranscript;
     
 
     const transcriptForHashing = {
@@ -41,14 +41,18 @@ export const handleValidate = (transcript: Transcript2) => {
     console.log("messageDigest", messageDigest);
 
     // Decrypt the signature with the public key
-    // const signatureDigest = signature
-    const signatureDigest = RSA.decryptText(signature, publicKeyE, publicKeyN);
+    const signatureDigest = signature
+    // const signatureDigest = RSA.decryptText(signature, publicKeyE, publicKeyN);
     console.log("signatureDigest", signatureDigest);
 
     // Compare the message digest with the decrypted signature digest
     if (signatureDigest === messageDigest) {
+        plainTranscript.validated = 'valid';
         console.log('valid');
     } else {
+        plainTranscript.validated = 'invalid';
         console.log('invalid');
     }
+    console.log("original", plainTranscript.validated);
+    return plainTranscript;
 };

@@ -11,6 +11,7 @@ import { Base64 } from "js-base64";
 import GeneratePdfForm from "../decrypt/GeneratePdfForm";
 import type { Transcript, RecordType, Key } from "./transcript.type";
 import { handleValidate } from "../utils/validateSignature";
+import { Transcript2 } from "./record";
 
 // type Key =
 
@@ -21,7 +22,7 @@ export default function Transcript() {
   //     config: "origin",
   //     ...d,
   // }));
-  const [transcript, setTranscript] = useState([]);
+  const [transcript, setTranscript] = useState<Transcript2[]>([]);
   const [plainTranscript, setPlainTranscript] = useState<RecordType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState("View"); // view buat liat data, add buat nambah data
@@ -130,35 +131,35 @@ export default function Transcript() {
     "encryptKey",
   ];
 
-    // const handleValidate = (idx: number) => {
-        // VALIDASI DIGITAL SIGNATURE
-        // 1. Decrypt Signature with publicKey => message digest
-        // 2. Decrypt database with encryptedKey + Hash => message digest
-        // 3. Compare message digest. If same (validated = "valid") else (validate = "invalid")
+  // const handleValidate = (idx: number) => {
+  // VALIDASI DIGITAL SIGNATURE
+  // 1. Decrypt Signature with publicKey => message digest
+  // 2. Decrypt database with encryptedKey + Hash => message digest
+  // 3. Compare message digest. If same (validated = "valid") else (validate = "invalid")
 
-        // Langkah 1. Decrypt signature with publicKey
-        // const signatureDigest = RSA.decryptText(transcript.signature, transcript.publicKeyE, transcript.publicKeyN);
+  // Langkah 1. Decrypt signature with publicKey
+  // const signatureDigest = RSA.decryptText(transcript.signature, transcript.publicKeyE, transcript.publicKeyN);
 
-        // Langkah 2. Hash database
-        // const messageDigest = keccak256(String(transcript));
+  // Langkah 2. Hash database
+  // const messageDigest = keccak256(String(transcript));
 
-        // Langkah 3. Compare message digest
-    //     if (signatureDigest === messageDigest) {
-    //         transcript.validated = 'valid';
-    //     } else {
-    //         transcript.validated = 'invalid';
-    //     }
-        // console.log("tes", idx);
-        // console.log("tis", plainTranscript[idx]);
-    // }
+  // Langkah 3. Compare message digest
+  //     if (signatureDigest === messageDigest) {
+  //         transcript.validated = 'valid';
+  //     } else {
+  //         transcript.validated = 'invalid';
+  //     }
+  // console.log("tes", idx);
+  // console.log("tis", plainTranscript[idx]);
+  // }
 
-  const handleDownload = () => {};
+  const handleDownload = () => { };
 
   const decryptTranscript = (transcript: RecordType[]): RecordType[] => {
     return transcript.map((item) => {
       const decryptedItem: RecordType = { ...item };
       Object.keys(decryptedItem).forEach((key) => {
-        if (key !== "encryptKey" && key !== "keyId") {
+        if (key !== "encryptKey" && key !== "keyId" && key !== "validated") {
           const decryptedKey = key as Key;
           const decryptedValue = RC4.decrypt(
             Base64.decode(decryptedItem[decryptedKey] as string),
@@ -167,8 +168,28 @@ export default function Transcript() {
           decryptedItem[decryptedKey] = decryptedValue as never;
         }
       });
+      // console.log("signature sebelum RC4?", decryptedItem["signature"]);
+      // console.log("signature sesudah RC4?", RC4.decrypt(
+      //   Base64.decode(decryptedItem["signature"] as string),
+      //   decryptedItem["encryptKey"]));
+      // console.log(decryptedItem["publicKeyE"]);
+      // console.log(decryptedItem["publicKeyN"]);
+      const decryptedSignature = RSA.decryptText(
+        decryptedItem["signature"] as string,
+        decryptedItem["publicKeyE"],
+        decryptedItem["publicKeyN"],
+      )
+      decryptedItem["signature"] = decryptedSignature as never;
       return decryptedItem;
     });
+  };
+
+  const validateTranscript = (index: number) => {
+    const updatedTranscript = [...transcript];
+    plainTranscript[index] = handleValidate(plainTranscript[index]);
+    setTranscript(updatedTranscript);
+    // Force re-render by updating state
+    setTranscript([...updatedTranscript]);
   };
 
   useEffect(() => {
@@ -192,9 +213,12 @@ export default function Transcript() {
           setPlainTranscript(tempDecryptedTranscript);
         } else {
           console.error("Failed to fetch transcript:", data.message);
+          alert("Loading data gagal");
         }
       } catch (error) {
         console.error("Error fetching transcript:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -202,161 +226,169 @@ export default function Transcript() {
   }, []);
 
   return (
-    <main className="min-h-screen items-center bg-gradient-to-b from-[#CAD8F0] to-blue2">
-      <Navbar currPage="Transcript" />
-      <div className="z-10 w-full items-center font- text-sm py-24 px-16">
-        <div className="text-center py-4">
-          <h1 className="text-purple1 text-lg font-bold">
-            Academic Transcript
-          </h1>
+    <>
+      {loading ? (
+        <div className="flex items-center flex-col justify-center h-screen bg-gradient-to-b from-[#CAD8F0] to-blue2">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-pink1"></div>
+          <p className="text-purple1 text-xl font-bold mt-4">Loading...</p>
         </div>
-        <div>
-          <div className="flex justify-center">
-            <div
-              className={
-                (viewEncrypted === true
-                  ? "bg-purple1 font-bold "
-                  : "pink1 hover:bg-pink2  ") +
-                "py-4 w-full text-center text-white rounded-t-2xl bg-pink1 "
-              }
-              onClick={() => setViewEncrypted(true)}
-            >
-              <p>Encrypted Record</p>
+      ) :
+        (<main className="min-h-screen items-center bg-gradient-to-b from-[#CAD8F0] to-blue2">
+          <Navbar currPage="Transcript" />
+          <div className="z-10 w-full items-center font- text-sm py-24 px-16">
+            <div className="text-center py-4">
+              <h1 className="text-purple1 text-lg font-bold">
+                Academic Transcript
+              </h1>
             </div>
-            <div
-              className={
-                (viewEncrypted === false
-                  ? "bg-purple1 font-bold "
-                  : "pink1 hover:bg-pink2  ") +
-                "py-4 w-full text-center text-white rounded-t-2xl bg-pink1 "
-              }
-              onClick={() => setViewEncrypted(false)}
-            >
-              <p>Decrypted Record</p>
+            <div>
+              <div className="flex justify-center">
+                <div
+                  className={
+                    (viewEncrypted === true
+                      ? "bg-purple1 font-bold "
+                      : "pink1 hover:bg-pink2  ") +
+                    "py-4 w-full text-center text-white rounded-t-2xl bg-pink1 "
+                  }
+                  onClick={() => setViewEncrypted(true)}
+                >
+                  <p>Encrypted Record</p>
+                </div>
+                <div
+                  className={
+                    (viewEncrypted === false
+                      ? "bg-purple1 font-bold "
+                      : "pink1 hover:bg-pink2  ") +
+                    "py-4 w-full text-center text-white rounded-t-2xl bg-pink1 "
+                  }
+                  onClick={() => setViewEncrypted(false)}
+                >
+                  <p>Decrypted Record</p>
+                </div>
+              </div>
+              <div className="overflow-x-auto border-4 border-purple1 scrollbar scrollbar-thumb-blue2 scrollbar-track-purple1">
+                <table className="overflow-x-auto text-center text-sm font-normal table-auto whitespace-nowrap text-white1">
+                  <thead className="font-bold bg-purple1 text-white1">
+                    <tr>
+                      {columns.map((col, idx) => (
+                        <th key={idx} className="border-2 border-purple1 px-4 py-2">
+                          {col}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  {viewEncrypted ? (
+                    <tbody>
+                      {transcript.map((item: any, idx) => {
+                        return (
+                          <tr
+                            key={`row-${idx}`}
+                            className="text-purple1 hover:bg-[#9CB3DA]"
+                          >
+                            {filledColumns.map((col, idx2) => (
+                              <th
+                                key={idx2}
+                                className="border-2 border-purple1 px-4 py-1 w-24 font-normal"
+                              >
+                                {item[col]}
+                              </th>
+                            ))}
+                            <th className="border-2 border-purple1 px-4 py-1 w-24 font-normal">
+                              <GeneratePdfForm transcriptData={plainTranscript[idx]} />
+                            </th>
+                            <th className="border-2 border-purple1 px-6 py-1 w-24 font-normal ">
+                              <div className="flex justify-center gap-x-2">
+                                <img
+                                  src={
+                                    plainTranscript[idx].validated === "unchecked"
+                                      ? "/unchecked.png"
+                                      : plainTranscript[idx].validated === "valid"
+                                        ? "/valid.png"
+                                        : "/invalid.png"
+                                  }
+                                  alt="download file"
+                                  className="w-8 h-6 "
+                                ></img>
+                                <button
+                                  key="idx"
+                                  className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
+                                  onClick={() => validateTranscript(idx)}
+                                >
+                                  Verify Data
+                                </button>
+                              </div>
+                            </th>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {plainTranscript.map((item: any, idx) => {
+                        return (
+                          <tr
+                            key={`row-${idx}`}
+                            className="text-purple1 hover:bg-[#9CB3DA]"
+                          >
+                            {filledColumns.map((col, idx2) => (
+                              <th
+                                key={idx2}
+                                className="border-2 border-purple1 px-4 py-1 w-24 font-normal"
+                              >
+                                {item[col]}
+                              </th>
+                            ))}
+                            <th className="border-2 border-purple1 px-4 py-1 w-24 font-normal">
+                              <GeneratePdfForm transcriptData={item} />
+                            </th>
+                            <th className="border-2 border-purple1 px-6 py-1 w-24 font-normal ">
+                              <div className="flex justify-center gap-x-2">
+                                <img
+                                  src={
+                                    plainTranscript[idx].validated === "unchecked"
+                                      ? "/unchecked.png"
+                                      : plainTranscript[idx].validated === "valid"
+                                        ? "/valid.png"
+                                        : "/invalid.png"
+                                  }
+                                  alt="download file"
+                                  className="w-8 h-6 "
+                                ></img>
+                                <button
+                                  key="idx"
+                                  className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
+                                  onClick={() => validateTranscript(idx)}
+                                >
+                                  Verify Data
+                                </button>
+                              </div>
+                            </th>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  )}
+                </table>
+              </div>
+              <div className="bg-purple1 flex justify-end py-2">
+                <Pagination
+                  totalPages={totalPages}
+                  page={pagination}
+                  setPage={setPagination}
+                />
+              </div>
             </div>
-          </div>
-          <div className="overflow-x-auto border-4 border-purple1 scrollbar scrollbar-thumb-blue2 scrollbar-track-purple1">
-            <table className="overflow-x-auto text-center text-sm font-normal table-auto whitespace-nowrap text-white1">
-              <thead className="font-bold bg-purple1 text-white1">
-                <tr>
-                  {columns.map((col, idx) => (
-                    <th key={idx} className="border-2 border-purple1 px-4 py-2">
-                      {col}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              {viewEncrypted ? (
-                <tbody>
-                  {transcript.map((item: any, idx) => {
-                    return (
-                      <tr
-                        key={`row-${idx}`}
-                        className="text-purple1 hover:bg-[#9CB3DA]"
-                      >
-                        {filledColumns.map((col, idx2) => (
-                          <th
-                            key={idx2}
-                            className="border-2 border-purple1 px-4 py-1 w-24 font-normal"
-                          >
-                            {item[col]}
-                          </th>
-                        ))}
-                        <th className="border-2 border-purple1 px-4 py-1 w-24 font-normal">
-                          <GeneratePdfForm transcriptData={plainTranscript[idx]} />
-                        </th>
-                        <th className="border-2 border-purple1 px-6 py-1 w-24 font-normal ">
-                          <div className="flex justify-center gap-x-2">
-                            <img
-                              src={
-                                item.validated === "unchecked"
-                                  ? "/unchecked.png"
-                                  : item.validated === "valid"
-                                  ? "/valid.png"
-                                  : "/invalid.png"
-                              }
-                              alt="download file"
-                              className="w-8 h-6 "
-                            ></img>
-                            <button
-                            key = "idx"
-                              className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
-                              onClick={() => handleValidate(plainTranscript[idx])}
-                            >
-                              Verify Data
-                            </button>
-                          </div>
-                        </th>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              ) : (
-                <tbody>
-                  {plainTranscript.map((item: any, idx) => {
-                    return (
-                      <tr
-                        key={`row-${idx}`}
-                        className="text-purple1 hover:bg-[#9CB3DA]"
-                      >
-                        {filledColumns.map((col, idx2) => (
-                          <th
-                            key={idx2}
-                            className="border-2 border-purple1 px-4 py-1 w-24 font-normal"
-                          >
-                            {item[col]}
-                          </th>
-                        ))}
-                        <th className="border-2 border-purple1 px-4 py-1 w-24 font-normal">
-                          <GeneratePdfForm transcriptData={item} />
-                        </th>
-                        <th className="border-2 border-purple1 px-6 py-1 w-24 font-normal ">
-                          <div className="flex justify-center gap-x-2">
-                            <img
-                              src={
-                                item.validated === "unchecked"
-                                  ? "/unchecked.png"
-                                  : item.validated === "valid"
-                                  ? "/valid.png"
-                                  : "/invalid.png"
-                              }
-                              alt="download file"
-                              className="w-8 h-6 "
-                            ></img>
-                            <button
-                            key = "idx"
-                              className="bg-pink1 border-2 border-white1 text-white1 text-sm rounded-lg block px-2 drop-shadow-lg hover:drop-shadow-md hover:bg-pink2 pr-1"
-                              onClick={() => handleValidate(plainTranscript[idx])}
-                            >
-                              Verify Data
-                            </button>
-                          </div>
-                        </th>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              )}
-            </table>
-          </div>
-          <div className="bg-purple1 flex justify-end py-2">
-            <Pagination
-              totalPages={totalPages}
-              page={pagination}
-              setPage={setPagination}
-            />
-          </div>
-        </div>
 
-        <div className="buttons flex gap-x-2 py-6 justify-center">
-          <button
-            className="bg-pink1 border-2 border- text-white1 text-md rounded-lg block w-60 p-2.5  hover:text-white drop-shadow-lg hover:drop-shadow-md hover:bg-pink2"
-            onClick={() => (window.location.href = "/input")}
-          >
-            Add Data
-          </button>
-        </div>
-      </div>
-    </main>
+            <div className="buttons flex gap-x-2 py-6 justify-center">
+              <button
+                className="bg-pink1 border-2 border- text-white1 text-md rounded-lg block w-60 p-2.5  hover:text-white drop-shadow-lg hover:drop-shadow-md hover:bg-pink2"
+                onClick={() => (window.location.href = "/input")}
+              >
+                Add Data
+              </button>
+            </div>
+          </div>
+        </main>)}
+    </>
   );
 }
